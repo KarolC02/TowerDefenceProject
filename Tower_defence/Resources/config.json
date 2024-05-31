@@ -1,0 +1,23 @@
+{
+  "BULLET_SPEED": 400,
+  "ENEMY_SPEED": 40,
+  "VERY_SLOW": 2.5,
+  "SLOW": 2.0,
+  "AVERAGE": 1.5,
+  "FAST": 1.0,
+  "VERY_FAST": 0.5,
+  
+  "START_MONEY": 80,
+
+  "BASIC_SLOW_FACTOR": 0.5,
+  "SLOW_FACTOR_PER_LEVEL": 0.04,
+  
+  "STUN_TIME": 1.0,
+  
+  "BASIC_STUN_CHANCE": 0.2,
+  "STUN_CHANCE_PER_LEVEL": 0.05,
+  
+  "STUN_DURATION": 1.0,
+  "SPAWN_COOLDOWN": 1.0
+
+}

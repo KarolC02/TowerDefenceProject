@@ -1,0 +1,571 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		F9016F732BF283EF00D47A76 /* LevelManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9016F712BF283EF00D47A76 /* LevelManager.cpp */; };
+		F9016F7C2BF2A93300D47A76 /* levels.json in Resources */ = {isa = PBXBuildFile; fileRef = F9016F7B2BF2A93300D47A76 /* levels.json */; };
+		F91605642BD5863D0009275D /* Button.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F91605622BD5863D0009275D /* Button.cpp */; };
+		F9299B3A2BB30CAC00071A1B /* ResourcePath.mm in Sources */ = {isa = PBXBuildFile; fileRef = F9299B392BB30CAC00071A1B /* ResourcePath.mm */; };
+		F9299B3D2BB30CAC00071A1B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9299B3C2BB30CAC00071A1B /* main.cpp */; };
+		F9299B402BB30CAC00071A1B /* background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = F9299B3F2BB30CAC00071A1B /* background.jpg */; };
+		F9299B422BB30CAC00071A1B /* doodle_pop.ogg in Resources */ = {isa = PBXBuildFile; fileRef = F9299B412BB30CAC00071A1B /* doodle_pop.ogg */; };
+		F9299B442BB30CAC00071A1B /* tuffy.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F9299B432BB30CAC00071A1B /* tuffy.ttf */; };
+		F9299B462BB30CAC00071A1B /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = F9299B452BB30CAC00071A1B /* icon.png */; };
+		F9299B4E2BB30CDB00071A1B /* sfml-audio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9299B4D2BB30CDB00071A1B /* sfml-audio.framework */; };
+		F9299B4F2BB30CDB00071A1B /* sfml-audio.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F9299B4D2BB30CDB00071A1B /* sfml-audio.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F9299B512BB30CE900071A1B /* sfml-audio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9299B4D2BB30CDB00071A1B /* sfml-audio.framework */; };
+		F9299B562BB30CE900071A1B /* SFML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9299B522BB30CE900071A1B /* SFML.framework */; };
+		F9299B572BB30CE900071A1B /* SFML.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F9299B522BB30CE900071A1B /* SFML.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F9299B582BB30CE900071A1B /* sfml-system.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9299B532BB30CE900071A1B /* sfml-system.framework */; };
+		F9299B592BB30CE900071A1B /* sfml-system.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F9299B532BB30CE900071A1B /* sfml-system.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F9299B5A2BB30CE900071A1B /* sfml-network.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9299B542BB30CE900071A1B /* sfml-network.framework */; };
+		F9299B5B2BB30CE900071A1B /* sfml-network.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F9299B542BB30CE900071A1B /* sfml-network.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F9299B5C2BB30CE900071A1B /* sfml-window.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9299B552BB30CE900071A1B /* sfml-window.framework */; };
+		F9299B5D2BB30CE900071A1B /* sfml-window.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F9299B552BB30CE900071A1B /* sfml-window.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F9299B5E2BB30D0100071A1B /* sfml-network.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9299B542BB30CE900071A1B /* sfml-network.framework */; };
+		F9299B602BB30D1200071A1B /* sfml-graphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F9299B5F2BB30D1200071A1B /* sfml-graphics.framework */; };
+		F9299B612BB30D1200071A1B /* sfml-graphics.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F9299B5F2BB30D1200071A1B /* sfml-graphics.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		F93DD3132BC32C3800F903F1 /* Bullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F93DD3112BC32C3800F903F1 /* Bullet.cpp */; };
+		F93DD3192BC336EC00F903F1 /* PelletTower.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F93DD3172BC336EC00F903F1 /* PelletTower.cpp */; };
+		F93DD31F2BC48D0500F903F1 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F93DD31D2BC48D0500F903F1 /* Game.cpp */; };
+		F93DD3222BC490BF00F903F1 /* Arena.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F93DD3202BC490BF00F903F1 /* Arena.cpp */; };
+		F93DD3252BC5797600F903F1 /* SquirtTower.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F93DD3232BC5797600F903F1 /* SquirtTower.cpp */; };
+		F93DD3282BC5797F00F903F1 /* FrostTower.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F93DD3262BC5797F00F903F1 /* FrostTower.cpp */; };
+		F93DD32B2BC5798700F903F1 /* BashTower.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F93DD3292BC5798700F903F1 /* BashTower.cpp */; };
+		F93DD32E2BC5799A00F903F1 /* SwarmTower.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F93DD32C2BC5799A00F903F1 /* SwarmTower.cpp */; };
+		F93DD3312BC579A400F903F1 /* DartTower.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F93DD32F2BC579A400F903F1 /* DartTower.cpp */; };
+		F96DF3012BF514BC00830FF9 /* config.json in Resources */ = {isa = PBXBuildFile; fileRef = F96DF3002BF514BC00830FF9 /* config.json */; };
+		F96DF3082BF52F4900830FF9 /* Particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F96DF3062BF52F4900830FF9 /* Particle.cpp */; };
+		F985966C2BBC74B900A905CE /* arial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F985966B2BBC74B900A905CE /* arial.ttf */; };
+		F991016F2C0A2BAE0091293D /* JsonUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F991016D2C0A2BAE0091293D /* JsonUtils.cpp */; };
+		F99101712C0A2C960091293D /* towers.json in Resources */ = {isa = PBXBuildFile; fileRef = F99101702C0A2C960091293D /* towers.json */; };
+		F9A185C12BC2E1B300D913F3 /* Enemy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A185BF2BC2E1B300D913F3 /* Enemy.cpp */; };
+		F9A185C42BC2E1DC00D913F3 /* Tower.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A185C22BC2E1DC00D913F3 /* Tower.cpp */; };
+		F9ADE5F52BDFF4AF00CD8434 /* Pathfinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ADE5F32BDFF4AF00CD8434 /* Pathfinder.cpp */; };
+		F9ADE5FD2BE7B9E300CD8434 /* ExplosiveBullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ADE5FB2BE7B9E300CD8434 /* ExplosiveBullet.cpp */; };
+		F9ADE6002BE7C34C00CD8434 /* FrostBullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ADE5FE2BE7C34C00CD8434 /* FrostBullet.cpp */; };
+		F9F397492BC7F180001DBCDF /* TowerButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9F397472BC7F180001DBCDF /* TowerButton.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		F9299B502BB30CDB00071A1B /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				F9299B592BB30CE900071A1B /* sfml-system.framework in Embed Frameworks */,
+				F9299B572BB30CE900071A1B /* SFML.framework in Embed Frameworks */,
+				F9299B4F2BB30CDB00071A1B /* sfml-audio.framework in Embed Frameworks */,
+				F9299B5D2BB30CE900071A1B /* sfml-window.framework in Embed Frameworks */,
+				F9299B5B2BB30CE900071A1B /* sfml-network.framework in Embed Frameworks */,
+				F9299B612BB30D1200071A1B /* sfml-graphics.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		F9016F6C2BF2813700D47A76 /* Level.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Level.hpp; sourceTree = "<group>"; };
+		F9016F712BF283EF00D47A76 /* LevelManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = LevelManager.cpp; sourceTree = "<group>"; };
+		F9016F722BF283EF00D47A76 /* LevelManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = LevelManager.hpp; sourceTree = "<group>"; };
+		F9016F742BF2869F00D47A76 /* json.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = json.hpp; path = External_Libraries/json.hpp; sourceTree = SOURCE_ROOT; };
+		F9016F7B2BF2A93300D47A76 /* levels.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = levels.json; sourceTree = "<group>"; };
+		F91605622BD5863D0009275D /* Button.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Button.cpp; sourceTree = "<group>"; };
+		F91605632BD5863D0009275D /* Button.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Button.hpp; sourceTree = "<group>"; };
+		F9299B342BB30CAC00071A1B /* Tower_defence.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tower_defence.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9299B382BB30CAC00071A1B /* Tower_defence-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Tower_defence-Info.plist"; path = "../Tower_defence-Info.plist"; sourceTree = "<group>"; };
+		F9299B392BB30CAC00071A1B /* ResourcePath.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ResourcePath.mm; sourceTree = "<group>"; };
+		F9299B3B2BB30CAC00071A1B /* ResourcePath.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourcePath.hpp; sourceTree = "<group>"; };
+		F9299B3C2BB30CAC00071A1B /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		F9299B3F2BB30CAC00071A1B /* background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = background.jpg; path = ../background.jpg; sourceTree = "<group>"; };
+		F9299B412BB30CAC00071A1B /* doodle_pop.ogg */ = {isa = PBXFileReference; lastKnownFileType = file; name = doodle_pop.ogg; path = ../doodle_pop.ogg; sourceTree = "<group>"; };
+		F9299B432BB30CAC00071A1B /* tuffy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = tuffy.ttf; path = ../tuffy.ttf; sourceTree = "<group>"; };
+		F9299B452BB30CAC00071A1B /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = ../icon.png; sourceTree = "<group>"; };
+		F9299B4D2BB30CDB00071A1B /* sfml-audio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "sfml-audio.framework"; path = "External_Libraries/SFML-2.6.1-macOS-clang-arm64/Frameworks/sfml-audio.framework"; sourceTree = "<group>"; };
+		F9299B522BB30CE900071A1B /* SFML.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SFML.framework; path = "External_Libraries/SFML-2.6.1-macOS-clang-arm64/Frameworks/SFML.framework"; sourceTree = "<group>"; };
+		F9299B532BB30CE900071A1B /* sfml-system.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "sfml-system.framework"; path = "External_Libraries/SFML-2.6.1-macOS-clang-arm64/Frameworks/sfml-system.framework"; sourceTree = "<group>"; };
+		F9299B542BB30CE900071A1B /* sfml-network.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "sfml-network.framework"; path = "External_Libraries/SFML-2.6.1-macOS-clang-arm64/Frameworks/sfml-network.framework"; sourceTree = "<group>"; };
+		F9299B552BB30CE900071A1B /* sfml-window.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "sfml-window.framework"; path = "External_Libraries/SFML-2.6.1-macOS-clang-arm64/Frameworks/sfml-window.framework"; sourceTree = "<group>"; };
+		F9299B5F2BB30D1200071A1B /* sfml-graphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "sfml-graphics.framework"; path = "External_Libraries/SFML-2.6.1-macOS-clang-arm64/Frameworks/sfml-graphics.framework"; sourceTree = "<group>"; };
+		F93DD3112BC32C3800F903F1 /* Bullet.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Bullet.cpp; sourceTree = "<group>"; };
+		F93DD3122BC32C3800F903F1 /* Bullet.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Bullet.hpp; sourceTree = "<group>"; };
+		F93DD3172BC336EC00F903F1 /* PelletTower.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PelletTower.cpp; sourceTree = "<group>"; };
+		F93DD3182BC336EC00F903F1 /* PelletTower.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PelletTower.hpp; sourceTree = "<group>"; };
+		F93DD31D2BC48D0500F903F1 /* Game.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
+		F93DD31E2BC48D0500F903F1 /* Game.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Game.hpp; sourceTree = "<group>"; };
+		F93DD3202BC490BF00F903F1 /* Arena.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Arena.cpp; sourceTree = "<group>"; };
+		F93DD3212BC490BF00F903F1 /* Arena.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Arena.hpp; sourceTree = "<group>"; };
+		F93DD3232BC5797600F903F1 /* SquirtTower.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SquirtTower.cpp; sourceTree = "<group>"; };
+		F93DD3242BC5797600F903F1 /* SquirtTower.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SquirtTower.hpp; sourceTree = "<group>"; };
+		F93DD3262BC5797F00F903F1 /* FrostTower.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FrostTower.cpp; sourceTree = "<group>"; };
+		F93DD3272BC5797F00F903F1 /* FrostTower.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FrostTower.hpp; sourceTree = "<group>"; };
+		F93DD3292BC5798700F903F1 /* BashTower.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BashTower.cpp; sourceTree = "<group>"; };
+		F93DD32A2BC5798700F903F1 /* BashTower.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BashTower.hpp; sourceTree = "<group>"; };
+		F93DD32C2BC5799A00F903F1 /* SwarmTower.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SwarmTower.cpp; sourceTree = "<group>"; };
+		F93DD32D2BC5799A00F903F1 /* SwarmTower.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SwarmTower.hpp; sourceTree = "<group>"; };
+		F93DD32F2BC579A400F903F1 /* DartTower.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DartTower.cpp; sourceTree = "<group>"; };
+		F93DD3302BC579A400F903F1 /* DartTower.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = DartTower.hpp; sourceTree = "<group>"; };
+		F96DF3002BF514BC00830FF9 /* config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = config.json; sourceTree = "<group>"; };
+		F96DF3062BF52F4900830FF9 /* Particle.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Particle.cpp; sourceTree = "<group>"; };
+		F96DF3072BF52F4900830FF9 /* Particle.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Particle.hpp; sourceTree = "<group>"; };
+		F98596482BBC4C5A00A905CE /* DEFINE.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = DEFINE.hpp; sourceTree = "<group>"; };
+		F985966B2BBC74B900A905CE /* arial.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = arial.ttf; sourceTree = "<group>"; };
+		F991016D2C0A2BAE0091293D /* JsonUtils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = JsonUtils.cpp; sourceTree = "<group>"; };
+		F991016E2C0A2BAE0091293D /* JsonUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = JsonUtils.hpp; sourceTree = "<group>"; };
+		F99101702C0A2C960091293D /* towers.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = towers.json; sourceTree = "<group>"; };
+		F9A185BF2BC2E1B300D913F3 /* Enemy.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Enemy.cpp; sourceTree = "<group>"; };
+		F9A185C02BC2E1B300D913F3 /* Enemy.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Enemy.hpp; sourceTree = "<group>"; };
+		F9A185C22BC2E1DC00D913F3 /* Tower.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Tower.cpp; sourceTree = "<group>"; };
+		F9A185C32BC2E1DC00D913F3 /* Tower.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Tower.hpp; sourceTree = "<group>"; };
+		F9ADE5F32BDFF4AF00CD8434 /* Pathfinder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Pathfinder.cpp; sourceTree = "<group>"; };
+		F9ADE5F42BDFF4AF00CD8434 /* Pathfinder.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Pathfinder.hpp; sourceTree = "<group>"; };
+		F9ADE5F62BE675B000CD8434 /* TowerUpgrade.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TowerUpgrade.h; sourceTree = "<group>"; };
+		F9ADE5FB2BE7B9E300CD8434 /* ExplosiveBullet.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ExplosiveBullet.cpp; sourceTree = "<group>"; };
+		F9ADE5FC2BE7B9E300CD8434 /* ExplosiveBullet.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ExplosiveBullet.hpp; sourceTree = "<group>"; };
+		F9ADE5FE2BE7C34C00CD8434 /* FrostBullet.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FrostBullet.cpp; sourceTree = "<group>"; };
+		F9ADE5FF2BE7C34C00CD8434 /* FrostBullet.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FrostBullet.hpp; sourceTree = "<group>"; };
+		F9F397472BC7F180001DBCDF /* TowerButton.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TowerButton.cpp; sourceTree = "<group>"; };
+		F9F397482BC7F180001DBCDF /* TowerButton.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TowerButton.hpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F9299B302BB30CAC00071A1B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F9299B562BB30CE900071A1B /* SFML.framework in Frameworks */,
+				F9299B582BB30CE900071A1B /* sfml-system.framework in Frameworks */,
+				F9299B5C2BB30CE900071A1B /* sfml-window.framework in Frameworks */,
+				F9299B602BB30D1200071A1B /* sfml-graphics.framework in Frameworks */,
+				F9299B4E2BB30CDB00071A1B /* sfml-audio.framework in Frameworks */,
+				F9299B5A2BB30CE900071A1B /* sfml-network.framework in Frameworks */,
+				F9299B512BB30CE900071A1B /* sfml-audio.framework in Frameworks */,
+				F9299B5E2BB30D0100071A1B /* sfml-network.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		F9016F6A2BF2812800D47A76 /* Level */ = {
+			isa = PBXGroup;
+			children = (
+				F9016F6C2BF2813700D47A76 /* Level.hpp */,
+				F9016F712BF283EF00D47A76 /* LevelManager.cpp */,
+				F9016F722BF283EF00D47A76 /* LevelManager.hpp */,
+			);
+			path = Level;
+			sourceTree = "<group>";
+		};
+		F9299B2A2BB30CAC00071A1B = {
+			isa = PBXGroup;
+			children = (
+				F9299B362BB30CAC00071A1B /* Tower_defence */,
+				F9299B352BB30CAC00071A1B /* Products */,
+				F9299B4C2BB30CDB00071A1B /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		F9299B352BB30CAC00071A1B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F9299B342BB30CAC00071A1B /* Tower_defence.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F9299B362BB30CAC00071A1B /* Tower_defence */ = {
+			isa = PBXGroup;
+			children = (
+				F9016F742BF2869F00D47A76 /* json.hpp */,
+				F9016F6A2BF2812800D47A76 /* Level */,
+				F9ADE6042BE7CDB300CD8434 /* Enemies */,
+				F9ADE5FA2BE7B9CB00CD8434 /* Bullets */,
+				F9F0B8032BCC5EC1005BDED1 /* Towers */,
+				F9ADE5F22BDFF49B00CD8434 /* Utils */,
+				F98596482BBC4C5A00A905CE /* DEFINE.hpp */,
+				F9299B3C2BB30CAC00071A1B /* main.cpp */,
+				F9299B3B2BB30CAC00071A1B /* ResourcePath.hpp */,
+				F9299B392BB30CAC00071A1B /* ResourcePath.mm */,
+				F93DD31D2BC48D0500F903F1 /* Game.cpp */,
+				F93DD31E2BC48D0500F903F1 /* Game.hpp */,
+				F93DD3202BC490BF00F903F1 /* Arena.cpp */,
+				F93DD3212BC490BF00F903F1 /* Arena.hpp */,
+				F91605622BD5863D0009275D /* Button.cpp */,
+				F91605632BD5863D0009275D /* Button.hpp */,
+				F9299B3E2BB30CAC00071A1B /* Resources */,
+				F9299B372BB30CAC00071A1B /* Supporting Files */,
+			);
+			path = Tower_defence;
+			sourceTree = "<group>";
+		};
+		F9299B372BB30CAC00071A1B /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F9299B382BB30CAC00071A1B /* Tower_defence-Info.plist */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		F9299B3E2BB30CAC00071A1B /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F96DF3002BF514BC00830FF9 /* config.json */,
+				F985966B2BBC74B900A905CE /* arial.ttf */,
+				F9299B3F2BB30CAC00071A1B /* background.jpg */,
+				F9299B412BB30CAC00071A1B /* doodle_pop.ogg */,
+				F9299B432BB30CAC00071A1B /* tuffy.ttf */,
+				F9299B452BB30CAC00071A1B /* icon.png */,
+				F9016F7B2BF2A93300D47A76 /* levels.json */,
+				F99101702C0A2C960091293D /* towers.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		F9299B4C2BB30CDB00071A1B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F9299B5F2BB30D1200071A1B /* sfml-graphics.framework */,
+				F9299B542BB30CE900071A1B /* sfml-network.framework */,
+				F9299B532BB30CE900071A1B /* sfml-system.framework */,
+				F9299B552BB30CE900071A1B /* sfml-window.framework */,
+				F9299B522BB30CE900071A1B /* SFML.framework */,
+				F9299B4D2BB30CDB00071A1B /* sfml-audio.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F9ADE5F22BDFF49B00CD8434 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				F9ADE5F32BDFF4AF00CD8434 /* Pathfinder.cpp */,
+				F9ADE5F42BDFF4AF00CD8434 /* Pathfinder.hpp */,
+				F991016D2C0A2BAE0091293D /* JsonUtils.cpp */,
+				F991016E2C0A2BAE0091293D /* JsonUtils.hpp */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		F9ADE5FA2BE7B9CB00CD8434 /* Bullets */ = {
+			isa = PBXGroup;
+			children = (
+				F93DD3122BC32C3800F903F1 /* Bullet.hpp */,
+				F93DD3112BC32C3800F903F1 /* Bullet.cpp */,
+				F9ADE5FB2BE7B9E300CD8434 /* ExplosiveBullet.cpp */,
+				F9ADE5FC2BE7B9E300CD8434 /* ExplosiveBullet.hpp */,
+				F9ADE5FE2BE7C34C00CD8434 /* FrostBullet.cpp */,
+				F9ADE5FF2BE7C34C00CD8434 /* FrostBullet.hpp */,
+			);
+			path = Bullets;
+			sourceTree = "<group>";
+		};
+		F9ADE6042BE7CDB300CD8434 /* Enemies */ = {
+			isa = PBXGroup;
+			children = (
+				F9A185BF2BC2E1B300D913F3 /* Enemy.cpp */,
+				F9A185C02BC2E1B300D913F3 /* Enemy.hpp */,
+			);
+			path = Enemies;
+			sourceTree = "<group>";
+		};
+		F9F0B8032BCC5EC1005BDED1 /* Towers */ = {
+			isa = PBXGroup;
+			children = (
+				F9A185C22BC2E1DC00D913F3 /* Tower.cpp */,
+				F9A185C32BC2E1DC00D913F3 /* Tower.hpp */,
+				F93DD32C2BC5799A00F903F1 /* SwarmTower.cpp */,
+				F93DD32D2BC5799A00F903F1 /* SwarmTower.hpp */,
+				F93DD3172BC336EC00F903F1 /* PelletTower.cpp */,
+				F93DD3182BC336EC00F903F1 /* PelletTower.hpp */,
+				F93DD3292BC5798700F903F1 /* BashTower.cpp */,
+				F93DD32A2BC5798700F903F1 /* BashTower.hpp */,
+				F93DD3232BC5797600F903F1 /* SquirtTower.cpp */,
+				F93DD3242BC5797600F903F1 /* SquirtTower.hpp */,
+				F93DD3262BC5797F00F903F1 /* FrostTower.cpp */,
+				F93DD3272BC5797F00F903F1 /* FrostTower.hpp */,
+				F93DD32F2BC579A400F903F1 /* DartTower.cpp */,
+				F93DD3302BC579A400F903F1 /* DartTower.hpp */,
+				F9F397472BC7F180001DBCDF /* TowerButton.cpp */,
+				F9F397482BC7F180001DBCDF /* TowerButton.hpp */,
+				F9ADE5F62BE675B000CD8434 /* TowerUpgrade.h */,
+				F96DF3062BF52F4900830FF9 /* Particle.cpp */,
+				F96DF3072BF52F4900830FF9 /* Particle.hpp */,
+			);
+			path = Towers;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F9299B332BB30CAC00071A1B /* Tower_defence */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F9299B492BB30CAC00071A1B /* Build configuration list for PBXNativeTarget "Tower_defence" */;
+			buildPhases = (
+				F9299B2F2BB30CAC00071A1B /* Sources */,
+				F9299B302BB30CAC00071A1B /* Frameworks */,
+				F9299B312BB30CAC00071A1B /* Resources */,
+				F9299B322BB30CAC00071A1B /* ShellScript */,
+				F9299B502BB30CDB00071A1B /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Tower_defence;
+			productName = Tower_defence;
+			productReference = F9299B342BB30CAC00071A1B /* Tower_defence.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F9299B2B2BB30CAC00071A1B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1530;
+				ORGANIZATIONNAME = "Karol Cichor";
+				TargetAttributes = {
+					F9299B332BB30CAC00071A1B = {
+						CreatedOnToolsVersion = 15.3;
+					};
+				};
+			};
+			buildConfigurationList = F9299B2E2BB30CAC00071A1B /* Build configuration list for PBXProject "Tower_defence" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F9299B2A2BB30CAC00071A1B;
+			productRefGroup = F9299B352BB30CAC00071A1B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F9299B332BB30CAC00071A1B /* Tower_defence */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F9299B312BB30CAC00071A1B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F985966C2BBC74B900A905CE /* arial.ttf in Resources */,
+				F9299B462BB30CAC00071A1B /* icon.png in Resources */,
+				F96DF3012BF514BC00830FF9 /* config.json in Resources */,
+				F9299B422BB30CAC00071A1B /* doodle_pop.ogg in Resources */,
+				F9299B402BB30CAC00071A1B /* background.jpg in Resources */,
+				F9016F7C2BF2A93300D47A76 /* levels.json in Resources */,
+				F9299B442BB30CAC00071A1B /* tuffy.ttf in Resources */,
+				F99101712C0A2C960091293D /* towers.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		F9299B322BB30CAC00071A1B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "# This shell script simply copies required SFML dylibs/frameworks into the application bundle frameworks folder.\n# If you're using static libraries (which is not recommended) you should remove this script from your project.\n\n# SETTINGS\nSFML_DEPENDENCIES_INSTALL_PREFIX=\"\"\nCMAKE_INSTALL_FRAMEWORK_PREFIX=\"/Users/sfml/Desktop/package/tmp/install/Library/Frameworks\"\nCMAKE_INSTALL_LIB_PREFIX=\"/Users/sfml/Desktop/package/tmp/install/Library/Frameworks/lib\"\nFRAMEWORKS_FULL_PATH=\"$BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/\"\n\n# Are we building a project that uses frameworks or dylibs?\ncase \"$SFML_BINARY_TYPE\" in\n    DYLIBS)\n        frameworks=\"false\"\n        ;;\n    *)\n        frameworks=\"true\"\n        ;;\nesac\n\n# Echoes to stderr\nerror () # $* message to display\n{\n    echo $* 1>&2\n    exit 2\n}\n\nassert () # $1 is a boolean, $2...N is an error message\n{\n    if [ $# -lt 2 ]\n    then\n        error \"Internal error in assert: not enough args\"\n    fi\n\n    if [ $1 -ne 0 ]\n    then\n        shift\n        error \"$*\"\n    fi\n}\n\nforce_remove () # $@ is some paths\n{\n    test $# -ge 1\n    assert $? \"force_remove() requires at least one parameter\"\n    rm -fr $@\n    assert $? \"couldn't remove $@\"\n}\n\ncopy () # $1 is a source, $2 is a destination\n{\n    test $# -eq 2\n    assert $? \"copy() requires two parameters\"\n    ditto \"$1\" \"$2\"\n    assert $? \"couldn't copy $1 to $2\"\n}\n\nrequire () # $1 is a SFML module like 'system' or 'audio'\n{\n    dest=\"$BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/\"\n\n    if [ -z \"$1\" ]\n    then\n        error \"require() requires one parameter!\"\n    else\n        # clean potentially old stuff\n        force_remove \"$dest/libsfml-$1\"*\n        force_remove \"$dest/sfml-$1.framework\"\n\n        # copy SFML libraries\n        if [ \"$frameworks\" = \"true\" ]\n        then\n            source=\"$CMAKE_INSTALL_FRAMEWORK_PREFIX/sfml-$1.framework\"\n            target=\"sfml-$1.framework\"\n        elif [ \"$SFML_LINK_DYLIBS_SUFFIX\" = \"-d\" ]\n        then\n            source=\"$CMAKE_INSTALL_LIB_PREFIX/libsfml-$1-d.dylib\"\n            target=\"`readlink $source`\"\n        else\n            source=\"$CMAKE_INSTALL_LIB_PREFIX/libsfml-$1.dylib\"\n            target=\"`readlink $source`\"\n        fi\n\n        copy \"$source\" \"$dest/$target\"\n\n        # copy extra dependencies\n        if [ \"$1\" = \"audio\" ]\n        then\n            # copy \"FLAC\" \"ogg\" \"vorbis\" \"vorbisenc\" \"vorbisfile\" \"OpenAL\" frameworks too\n            for f in \"FLAC\" \"ogg\" \"vorbis\" \"vorbisenc\" \"vorbisfile\" \"OpenAL\"\n            do\n                copy \"$SFML_DEPENDENCIES_INSTALL_PREFIX/$f.framework\" \"$dest/$f.framework\"\n            done\n        elif [ \"$1\" = \"graphics\" ]\n        then\n            copy \"$SFML_DEPENDENCIES_INSTALL_PREFIX/freetype.framework\" \"$dest/freetype.framework\"\n        fi\n    fi\n}\n\nif [ -n \"$SFML_SYSTEM\" ]\nthen\n    require \"system\"\nfi\n\nif [ -n \"$SFML_AUDIO\" ]\nthen\n    require \"audio\"\nfi\n\nif [ -n \"$SFML_NETWORK\" ]\nthen\n    require \"network\"\nfi\n\nif [ -n \"$SFML_WINDOW\" ]\nthen\n    require \"window\"\nfi\n\nif [ -n \"$SFML_GRAPHICS\" ]\nthen\n    require \"graphics\"\nfi\n\n                \n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F9299B2F2BB30CAC00071A1B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F9ADE6002BE7C34C00CD8434 /* FrostBullet.cpp in Sources */,
+				F93DD3132BC32C3800F903F1 /* Bullet.cpp in Sources */,
+				F93DD3222BC490BF00F903F1 /* Arena.cpp in Sources */,
+				F93DD3312BC579A400F903F1 /* DartTower.cpp in Sources */,
+				F9F397492BC7F180001DBCDF /* TowerButton.cpp in Sources */,
+				F9ADE5F52BDFF4AF00CD8434 /* Pathfinder.cpp in Sources */,
+				F93DD32E2BC5799A00F903F1 /* SwarmTower.cpp in Sources */,
+				F96DF3082BF52F4900830FF9 /* Particle.cpp in Sources */,
+				F91605642BD5863D0009275D /* Button.cpp in Sources */,
+				F9016F732BF283EF00D47A76 /* LevelManager.cpp in Sources */,
+				F9A185C12BC2E1B300D913F3 /* Enemy.cpp in Sources */,
+				F93DD32B2BC5798700F903F1 /* BashTower.cpp in Sources */,
+				F9299B3D2BB30CAC00071A1B /* main.cpp in Sources */,
+				F9299B3A2BB30CAC00071A1B /* ResourcePath.mm in Sources */,
+				F9A185C42BC2E1DC00D913F3 /* Tower.cpp in Sources */,
+				F9ADE5FD2BE7B9E300CD8434 /* ExplosiveBullet.cpp in Sources */,
+				F93DD3252BC5797600F903F1 /* SquirtTower.cpp in Sources */,
+				F93DD3192BC336EC00F903F1 /* PelletTower.cpp in Sources */,
+				F991016F2C0A2BAE0091293D /* JsonUtils.cpp in Sources */,
+				F93DD3282BC5797F00F903F1 /* FrostTower.cpp in Sources */,
+				F93DD31F2BC48D0500F903F1 /* Game.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		F9299B472BB30CAC00071A1B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++11";
+				CLANG_CXX_LIBRARY = "libc++";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Library/Frameworks/,
+					"$(inherited)",
+				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include/,
+					"$(inherited)",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/lib/,
+					"$(inherited)",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.00;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"$(SFML_SYSTEM)",
+					"$(SFML_WINDOW)",
+					"$(SFML_GRAPHICS)",
+					"$(SFML_AUDIO)",
+					"$(SFML_NETWORK)",
+				);
+				SFML_AUDIO = "$(SFML_LINK_PREFIX) sfml-audio$(SFML_LINK_SUFFIX)";
+				SFML_BINARY_TYPE = FRAMEWORKS;
+				SFML_GRAPHICS = "$(SFML_LINK_PREFIX) sfml-graphics$(SFML_LINK_SUFFIX)";
+				SFML_LINK_DYLIBS_PREFIX = "-l";
+				SFML_LINK_DYLIBS_SUFFIX = "";
+				SFML_LINK_FRAMEWORKS_PREFIX = "-framework";
+				SFML_LINK_FRAMEWORKS_SUFFIX = "";
+				SFML_LINK_PREFIX = "$(SFML_LINK_$(SFML_BINARY_TYPE)_PREFIX)";
+				SFML_LINK_SUFFIX = "$(SFML_LINK_$(SFML_BINARY_TYPE)_SUFFIX)";
+				SFML_NETWORK = "$(SFML_LINK_PREFIX) sfml-network$(SFML_LINK_SUFFIX)";
+				SFML_SYSTEM = "$(SFML_LINK_PREFIX) sfml-system$(SFML_LINK_SUFFIX)";
+				SFML_WINDOW = "$(SFML_LINK_PREFIX) sfml-window$(SFML_LINK_SUFFIX)";
+				SUPPORTED_PLATFORMS = macosx;
+			};
+			name = Debug;
+		};
+		F9299B482BB30CAC00071A1B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++11";
+				CLANG_CXX_LIBRARY = "libc++";
+				FRAMEWORK_SEARCH_PATHS = (
+					/Library/Frameworks/,
+					"$(inherited)",
+				);
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include/,
+					"$(inherited)",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/lib/,
+					"$(inherited)",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 11.00;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"$(SFML_SYSTEM)",
+					"$(SFML_WINDOW)",
+					"$(SFML_GRAPHICS)",
+					"$(SFML_AUDIO)",
+					"$(SFML_NETWORK)",
+				);
+				SFML_AUDIO = "$(SFML_LINK_PREFIX) sfml-audio$(SFML_LINK_SUFFIX)";
+				SFML_BINARY_TYPE = FRAMEWORKS;
+				SFML_GRAPHICS = "$(SFML_LINK_PREFIX) sfml-graphics$(SFML_LINK_SUFFIX)";
+				SFML_LINK_DYLIBS_PREFIX = "-l";
+				SFML_LINK_DYLIBS_SUFFIX = "";
+				SFML_LINK_FRAMEWORKS_PREFIX = "-framework";
+				SFML_LINK_FRAMEWORKS_SUFFIX = "";
+				SFML_LINK_PREFIX = "$(SFML_LINK_$(SFML_BINARY_TYPE)_PREFIX)";
+				SFML_LINK_SUFFIX = "$(SFML_LINK_$(SFML_BINARY_TYPE)_SUFFIX)";
+				SFML_NETWORK = "$(SFML_LINK_PREFIX) sfml-network$(SFML_LINK_SUFFIX)";
+				SFML_SYSTEM = "$(SFML_LINK_PREFIX) sfml-system$(SFML_LINK_SUFFIX)";
+				SFML_WINDOW = "$(SFML_LINK_PREFIX) sfml-window$(SFML_LINK_SUFFIX)";
+				SUPPORTED_PLATFORMS = macosx;
+			};
+			name = Release;
+		};
+		F9299B4A2BB30CAC00071A1B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
+				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/External_Libraries/SFML-2.6.1-macOS-clang-arm64/Frameworks",
+				);
+				INFOPLIST_FILE = "Tower_defence/Tower_defence-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		F9299B4B2BB30CAC00071A1B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
+				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/External_Libraries/SFML-2.6.1-macOS-clang-arm64/Frameworks",
+				);
+				INFOPLIST_FILE = "Tower_defence/Tower_defence-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F9299B2E2BB30CAC00071A1B /* Build configuration list for PBXProject "Tower_defence" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F9299B472BB30CAC00071A1B /* Debug */,
+				F9299B482BB30CAC00071A1B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F9299B492BB30CAC00071A1B /* Build configuration list for PBXNativeTarget "Tower_defence" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F9299B4A2BB30CAC00071A1B /* Debug */,
+				F9299B4B2BB30CAC00071A1B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F9299B2B2BB30CAC00071A1B /* Project object */;
+}

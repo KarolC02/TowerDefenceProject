@@ -53,7 +53,7 @@ void BashTower::update(float deltaTime, std::vector<std::unique_ptr<Enemy>>& ene
                 attacked = true;
                 // Check if the enemy should be stunned
                 if (doWeStun) {
-                    int stunDuration = STUN_DURATION; // TODO; // Use the current level's stun duration
+                    int stunDuration = getJsonValue(CONFIG_PATH, "STUN_DURATION" + std::to_string(currentLevel));
                     enemy->stun(stunDuration);  // Stun the enemy
                 }
             }
@@ -65,7 +65,7 @@ void BashTower::update(float deltaTime, std::vector<std::unique_ptr<Enemy>>& ene
             stompEffect.setPosition(towerPos);
             stompEffectAlpha = 100;
 
-            if (PARTICLES_ON) {
+            if (getJsonValue(CONFIG_PATH, "PARTICLES_ON")) {
                 // Create particles at the tower's position and move them immediately
                 createParticles(towerPos);
             }
@@ -81,7 +81,7 @@ void BashTower::update(float deltaTime, std::vector<std::unique_ptr<Enemy>>& ene
         }
     }
 
-    if (PARTICLES_ON) {
+    if (getJsonValue(CONFIG_PATH, "PARTICLES_ON")) {
         // Update particles
         for (auto& particle : particles) {
             particle.update(deltaTime);
@@ -107,7 +107,7 @@ void BashTower::draw(sf::RenderWindow& window) {
         window.draw(stompEffect);
     }
 
-    if (PARTICLES_ON) {
+    if (getJsonValue(CONFIG_PATH, "PARTICLES_ON")){
         // Draw particles
         for (const auto& particle : particles) {
             particle.draw(window);
@@ -116,7 +116,7 @@ void BashTower::draw(sf::RenderWindow& window) {
 }
 
 float BashTower::getChanceToStun() const {
-    return BASIC_STUN_CHANCE + STUN_CHANCE_PER_LEVEL * currentLevel;
+    return (getJsonValue(CONFIG_PATH, "STUN_CHANCE" + std::to_string(currentLevel)));
 }
 
 void BashTower::createParticles(sf::Vector2f position) {

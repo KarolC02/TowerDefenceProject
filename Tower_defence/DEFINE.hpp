@@ -63,31 +63,5 @@ enum class TowerType {
 #define endY 11
 
 
-// ABOVE I WANT TO BE ABLE TO MODIFY THROUGH JSON FILE
-
-#define BASIC_SLOW_FACTOR 0.5f
-#define SLOW_FACTOR_PER_LEVEL 0.04f
-#define STUN_TIME 1.0f
-
-#define BASIC_STUN_CHANCE 0.2f
-#define STUN_CHANCE_PER_LEVEL 0.05f
-
-#define STUN_DURATION 1.0f
-#define SPAWN_COOLDOWN 1.0f
-
-#define VALUE 10
-
-
-#define VERY_SLOW 2.5f
-#define SLOW 2.0f
-#define AVERAGE 1.5f
-#define FAST 1.0f
-#define VERT_FAST 0.5f
-
-#define PARTICLES_ON true
 #define CONFIG_PATH "/Users/karol/desktop/Tower_defence/Tower_defence/Resources/config.json"
 #define TOWER_PARAMETERS_PATH "/Users/karol/desktop/Tower_defence/Tower_defence/Resources/towers.json"
-
-// #define BULLET_SPEED 500
-// #define ENEMY_SPEED 2 * GRID_CELL_SIZE // około 12 sekund przejscie mapy
-

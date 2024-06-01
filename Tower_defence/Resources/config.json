@@ -1,23 +1,31 @@
 {
   "BULLET_SPEED": 400,
   "ENEMY_SPEED": 40,
-  "VERY_SLOW": 2.5,
-  "SLOW": 2.0,
-  "AVERAGE": 1.5,
-  "FAST": 1.0,
-  "VERY_FAST": 0.5,
+  "SPAWN_COOLDOWN": 0.1,
+  "START_MONEY": 8000,
   
-  "START_MONEY": 80,
-
-  "BASIC_SLOW_FACTOR": 0.5,
-  "SLOW_FACTOR_PER_LEVEL": 0.04,
   
-  "STUN_TIME": 1.0,
+  "comment1": "Below we have bash tower additional parameters",
+  "PARTICLES_ON": true,
+  "STUN_CHANCE0": 0.1,
+  "STUN_CHANCE1": 0.2,
+  "STUN_CHANCE2": 0.3,
+  "STUN_CHANCE3": 0.4,
+  "STUN_CHANCE4": 0.5,
+  "STUN_CHANCE5": 1.0,
+  "STUN_DURATION0": 0.1,
+  "STUN_DURATION1": 0.4,
+  "STUN_DURATION2": 2,
+  "STUN_DURATION3": 3,
+  "STUN_DURATION4": 5,
+  "STUN_DURATION5": 10,
   
-  "BASIC_STUN_CHANCE": 0.2,
-  "STUN_CHANCE_PER_LEVEL": 0.05,
+  "comment2": "Below we have frost tower additional parameters",
+  "SLOW_FACTOR0": 0.1,
+  "SLOW_FACTOR1": 0.15,
+  "SLOW_FACTOR2": 0.2,
+  "SLOW_FACTOR3": 0.25,
+  "SLOW_FACTOR4": 0.3,
+  "SLOW_FACTOR5": 0.5
   
-  "STUN_DURATION": 1.0,
-  "SPAWN_COOLDOWN": 1.0
-
 }

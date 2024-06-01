@@ -15,7 +15,7 @@ FrostTower::FrostTower(sf::Vector2f position)
 
 void FrostTower::fireBullet(const Enemy* targetEnemy, float bulletSpeed) {
     if (canAttack()) {
-        float slowFactor = BASIC_SLOW_FACTOR + SLOW_FACTOR_PER_LEVEL * currentLevel;
+        float slowFactor = getJsonValue(CONFIG_PATH, "SLOW_FACTOR" + std::to_string(currentLevel));
         float areaEffectRadius = 50.f;
         bullets.emplace_back(std::make_unique<FrostBullet>(shape.getPosition(), targetEnemy, bulletSpeed, damage, slowFactor, areaEffectRadius, 2.0f));
         resetCooldown();

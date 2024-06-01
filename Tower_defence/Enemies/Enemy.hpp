@@ -5,6 +5,9 @@
 
 class Enemy {
 protected:
+    
+    float _stunTime;
+    
     sf::CircleShape hitbox; // Hitbox calculation
     sf::CircleShape circleShape; // Circle shape
     sf::ConvexShape triangleShape; // Triangle shape

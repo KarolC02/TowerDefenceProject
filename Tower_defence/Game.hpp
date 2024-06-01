@@ -31,7 +31,7 @@ public:
     void handleMouseHover(sf::Vector2i hoverPosition);
     std::vector<TowerButton> buttons;
 private:
-
+    bool gameStarted;
     sf::Clock pausedClock;
     sf::RectangleShape pauseOverlay;
     sf::Text pausedText;
@@ -43,6 +43,7 @@ private:
     TowerButton SquirtTowerButton;
     TowerButton BashTowerButton;
     TowerButton FrostTowerButton;
+    Button StartButton;
     Button ResetButton;
     sf::CircleShape towerRangeCircle;
     

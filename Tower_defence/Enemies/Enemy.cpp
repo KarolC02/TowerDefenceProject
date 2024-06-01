@@ -4,7 +4,7 @@
 #include "JsonUtils.hpp"
 
 Enemy::Enemy(sf::Vector2f startPosition, int initialHealth, int val, bool flying, bool spn, bool slw, bool fst)
-    : position(startPosition), health(initialHealth), maxHealth(initialHealth), isDead(false), immune(true), gotPath(false), value(val), _originalSpeed(speed), flying(flying), isStunned(false), spawn(spn), slowImmune(slw), fast(fst), _stunTime(0) {
+    : position(startPosition), health(initialHealth), maxHealth(initialHealth), isDead(false), immune(true), gotPath(false), value(val), _originalSpeed(speed), flying(flying), isStunned(false), spawn(spn), slowImmune(slw), fast(fst), _stunTime(10) {
         
         
         // Access the ENEMY_SPEED from the Config singleton instance
@@ -49,6 +49,7 @@ Enemy::Enemy(sf::Vector2f startPosition, int initialHealth, int val, bool flying
 
 void Enemy::update(float deltaTime) {
     if (isStunned && stunTimer.getElapsedTime().asSeconds() > _stunTime) {
+        std::cout << "STUN TIME IS " << _stunTime <<std::endl;
         isStunned = false;
         speed = _originalSpeed;
     }
@@ -104,6 +105,7 @@ void Enemy::update(float deltaTime) {
 }
 
 void Enemy::stun(float duration) {
+    std::cout << "I am stunned !" << std::endl;
     isStunned = true;
     _stunTime = duration;
     stunTimer.restart();

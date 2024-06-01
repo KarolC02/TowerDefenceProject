@@ -5,10 +5,10 @@
             "maxDuration": 35,
             "numberOfEnemies": 100,
             "group": false,
-            "health": 20,
+            "health": 2000,
             "immune": false,
             "fast": false,
-            "flying": true,
+            "flying": false,
             "spawn": false,
             "value": 1
         },

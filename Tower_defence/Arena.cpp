@@ -21,7 +21,7 @@ Arena::Arena(float width, float height, sf::Vector2f position)
       payCheck(0), scorePayCheck(0), livesDebt(0), justAddedTower(false) {
     
           
-    levels = LevelManager::loadLevels(resourcePath() + "levels.json");
+    levels = LevelManager::loadLevels("/Users/karol/desktop/Tower_defence/Tower_defence/Resources/levels.json");
     std::fill(&grid[0][0], &grid[0][0] + sizeof(grid), false);
         
     for (int i = 0; i < GRID_WIDTH * 2; ++i) {

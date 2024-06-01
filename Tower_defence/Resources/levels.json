@@ -2,8 +2,8 @@
     "levels": [
         {
             "levelNumber": 1,
-            "maxDuration": 35,
-            "numberOfEnemies": 100,
+            "maxDuration": 350,
+            "numberOfEnemies": 1000,
             "group": false,
             "health": 2000,
             "immune": false,

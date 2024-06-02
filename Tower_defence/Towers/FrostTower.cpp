@@ -13,7 +13,7 @@ FrostTower::FrostTower(sf::Vector2f position)
     info = "Frost Tower";
 }
 
-void FrostTower::fireBullet(const Enemy* targetEnemy, float bulletSpeed) {
+void FrostTower::fireBullet(const std::shared_ptr<Enemy> targetEnemy, float bulletSpeed) {
     if (canAttack()) {
         float slowFactor = getJsonValue(CONFIG_PATH, "SLOW_FACTOR" + std::to_string(currentLevel));
         float areaEffectRadius = 50.f;
@@ -22,7 +22,7 @@ void FrostTower::fireBullet(const Enemy* targetEnemy, float bulletSpeed) {
     }
 }
 
-void FrostTower::update(float deltaTime, std::vector<std::unique_ptr<Enemy>>& enemies, const sf::RenderWindow& window) {
+void FrostTower::update(float deltaTime, std::vector<std::shared_ptr<Enemy>>& enemies, const sf::RenderWindow& window) {
     // Cooldown timer decrement
     if (attackCooldown > 0) {
         attackCooldown -= deltaTime;
@@ -31,7 +31,7 @@ void FrostTower::update(float deltaTime, std::vector<std::unique_ptr<Enemy>>& en
     // Fire bullets at enemies in range
     for (auto& enemy : enemies) {
         if (isInRange(enemy->getPosition()) && canAttack()) {
-            fireBullet(enemy.get(), bulletSpeed);
+            fireBullet(enemy , bulletSpeed);
             break; // Stop checking after finding the first enemy in range
         }
     }

@@ -3,7 +3,7 @@
 #include <iostream>
 #include "DEFINE.hpp"
 
-Bullet::Bullet(const sf::Vector2f& startPosition, const Enemy* targetEnemy, float bulletSpeed, int damage)
+Bullet::Bullet(const sf::Vector2f& startPosition, std::shared_ptr<Enemy> targetEnemy, float bulletSpeed, int damage)
     : targetEnemy(targetEnemy), speed(bulletSpeed), damage(damage) {
     shape.setRadius(5);
     shape.setFillColor(sf::Color::Red);
@@ -12,7 +12,7 @@ Bullet::Bullet(const sf::Vector2f& startPosition, const Enemy* targetEnemy, floa
     updateDirection();
 }
 
-Bullet::Bullet(const sf::Vector2f& startPosition, const Enemy* targetEnemy, float bulletSpeed, int damage, sf::Color color)
+Bullet::Bullet(const sf::Vector2f& startPosition, std::shared_ptr<Enemy> targetEnemy, float bulletSpeed, int damage, sf::Color color)
     : targetEnemy(targetEnemy), speed(bulletSpeed), damage(damage) {
     shape.setRadius(5);
     shape.setFillColor(color);
@@ -32,10 +32,9 @@ void Bullet::updateDirection() {
     }
 }
 
-void Bullet::update(float deltaTime, const std::vector<std::unique_ptr<Enemy>>& enemies) {
-    // Find the target enemy by ID if the target is valid and not dead
-    if (targetEnemy && !targetEnemy->getIsDead()) {
-        updateDirection();
+void Bullet::update(float deltaTime, const std::vector<std::shared_ptr<Enemy>>& enemies) {
+    if (targetEnemy && targetEnemy->getIsDead()) {
+        targetEnemy.reset();  // Forget the target if it is dead
     }
 
     // Move in the last known direction

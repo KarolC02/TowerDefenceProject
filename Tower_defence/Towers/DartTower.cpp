@@ -14,7 +14,7 @@ DartTower::DartTower(sf::Vector2f position)
     info = "Dart Tower";
 }
 
-void DartTower::fireBullet(const Enemy* targetEnemy, float bulletSpeed) {
+void DartTower::fireBullet(const std::shared_ptr<Enemy> targetEnemy, float bulletSpeed) {
     if (canAttack()) {
         float explosionRadius = 50.0f; // Define an appropriate explosion radius
         bullets.emplace_back(std::make_unique<ExplosiveBullet>(shape.getPosition(), targetEnemy, bulletSpeed, damage, explosionRadius));
@@ -22,7 +22,7 @@ void DartTower::fireBullet(const Enemy* targetEnemy, float bulletSpeed) {
     }
 }
 
-void DartTower::update(float deltaTime, std::vector<std::unique_ptr<Enemy>>& enemies, const sf::RenderWindow& window) {
+void DartTower::update(float deltaTime, std::vector<std::shared_ptr<Enemy>>& enemies, const sf::RenderWindow& window) {
     // Cooldown timer decrement
     if (attackCooldown > 0) {
         attackCooldown -= deltaTime;
@@ -31,7 +31,7 @@ void DartTower::update(float deltaTime, std::vector<std::unique_ptr<Enemy>>& ene
     // Fire bullets at enemies in range
     for (auto& enemy : enemies) {
         if (isInRange(enemy->getPosition()) && canAttack()) {
-            fireBullet(enemy.get(), bulletSpeed);
+            fireBullet(enemy, bulletSpeed);
             break; // Stop checking after finding the first enemy in range
         }
     }

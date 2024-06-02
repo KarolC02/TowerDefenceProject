@@ -13,17 +13,17 @@ SwarmTower::SwarmTower(sf::Vector2f position)
     info = "Swarm Tower 1";
 }
 
-void SwarmTower::fireBullet(const Enemy* targetEnemy, float bulletSpeed) {
+void SwarmTower::fireBullet(const std::shared_ptr<Enemy> targetEnemy, float bulletSpeed) {
     bullets.emplace_back(std::make_unique<Bullet>(shape.getPosition(), targetEnemy, bulletSpeed, damage));
 }
 
-void SwarmTower::update(float deltaTime, std::vector<std::unique_ptr<Enemy>>& enemies, const sf::RenderWindow& window) {
+void SwarmTower::update(float deltaTime, std::vector<std::shared_ptr<Enemy>>& enemies, const sf::RenderWindow& window) {
     if (attackCooldown > 0) {
         attackCooldown -= deltaTime;
     }
 
     if (canAttack()) {
-        std::vector<Enemy*> targets;
+        std::vector<std::shared_ptr<Enemy>> targets;
         sf::Vector2f towerPos = getPosition();
         float attackRange = getRange();
 
@@ -36,7 +36,7 @@ void SwarmTower::update(float deltaTime, std::vector<std::unique_ptr<Enemy>>& en
             float distance = std::hypot(towerPos.x - enemyPos.x, towerPos.y - enemyPos.y);
 
             if (distance <= attackRange) {
-                targets.push_back(enemy.get());
+                targets.push_back(enemy);
                 if (targets.size() == 4) {
                     break; // Attack up to four enemies
                 }
@@ -45,8 +45,8 @@ void SwarmTower::update(float deltaTime, std::vector<std::unique_ptr<Enemy>>& en
 
         if (!targets.empty()) {
             // std::cout << "FIRING " << targets.size() << " Bullets!" << std::endl;
-            for (auto* target : targets) {
-                fireBullet(target, bulletSpeed);
+            for (auto& target : targets) {
+                fireBullet(target, bulletSpeed);  // Pass shared_ptr directly
             }
             resetCooldown(); // Reset cooldown after firing bullets
         }

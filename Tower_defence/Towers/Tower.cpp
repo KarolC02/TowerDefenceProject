@@ -117,7 +117,7 @@ void Tower::eraseOutOfScreenBullets(const sf::RenderWindow& window) {
                   bullets.end());
 }
 
-void Tower::fireBullet(const Enemy* targetEnemy, float bulletSpeed) {
+void Tower::fireBullet(const std::shared_ptr<Enemy> targetEnemy, float bulletSpeed) {
     if (canAttack()) {
         // std::cout << "Firing bullet at enemy: " << targetEnemy->getPosition().x << ", " << targetEnemy->getPosition().y << std::endl;
         bullets.emplace_back(std::make_unique<Bullet>(shape.getPosition(), targetEnemy, bulletSpeed, damage));
@@ -125,7 +125,7 @@ void Tower::fireBullet(const Enemy* targetEnemy, float bulletSpeed) {
     }
 }
 
-void Tower::update(float deltaTime, std::vector<std::unique_ptr<Enemy>>& enemies, const sf::RenderWindow& window) {
+void Tower::update(float deltaTime, std::vector<std::shared_ptr<Enemy>>& enemies, const sf::RenderWindow& window) {
     // Cooldown timer decrement
     if (attackCooldown > 0) {
         attackCooldown -= deltaTime;
@@ -134,7 +134,7 @@ void Tower::update(float deltaTime, std::vector<std::unique_ptr<Enemy>>& enemies
     // Fire bullets at enemies in range
     for (auto& enemy : enemies) {
         if (isInRange(enemy->getPosition()) && canAttack()) {
-            fireBullet(enemy.get(), bulletSpeed);
+            fireBullet(enemy , bulletSpeed);
             break; // Stop checking after finding the first enemy in range
         }
     }

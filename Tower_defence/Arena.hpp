@@ -22,7 +22,7 @@ public:
     void drawGrid(sf::RenderWindow& window) const;
     
     std::vector<std::unique_ptr<Tower>>& getTowers();
-    std::vector<std::unique_ptr<Enemy>>& getEnemies();
+    std::vector<std::shared_ptr<Enemy>>& getEnemies();
 
     bool addTower(std::unique_ptr<Tower> tower);
     bool deleteTower(const sf::Vector2f& position);
@@ -89,7 +89,7 @@ private:
     
     mutable std::shared_timed_mutex mtx;
 
-    std::vector<std::unique_ptr<Enemy>> enemies;
+    std::vector<std::shared_ptr<Enemy>> enemies;
     std::vector<sf::RectangleShape> pathCells;
 
     std::vector<Level> levels;

@@ -23,11 +23,11 @@ BashTower::BashTower(sf::Vector2f position)
     showStompEffect = false;
 }
 
-void BashTower::fireBullet(const Enemy* targetEnemy, float bulletSpeed) {
+void BashTower::fireBullet(const std::shared_ptr<Enemy> targetEnemy, float bulletSpeed) {
     // std::cout << "BashTower firing bullet" << std::endl;
 }
 
-void BashTower::update(float deltaTime, std::vector<std::unique_ptr<Enemy>>& enemies, const sf::RenderWindow& window) {
+void BashTower::update(float deltaTime, std::vector<std::shared_ptr<Enemy>>& enemies, const sf::RenderWindow& window) {
     static std::random_device rd;  // Random device to seed the generator
     static std::mt19937 gen(rd()); // Mersenne Twister random number generator
     static std::uniform_real_distribution<float> dis(0.0f, 1.0f); // Uniform distribution [0, 1]

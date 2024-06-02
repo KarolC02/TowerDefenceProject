@@ -29,8 +29,8 @@ public:
     int cost; // Cost of the tower
     Tower(sf::Vector2f position, sf::Color color, float atkSpeed, int rng, const std::string& typeSymbol, int dmg, int cst);
     
-    virtual void update(float deltaTime, std::vector<std::unique_ptr<Enemy>>& enemies, const sf::RenderWindow& window);
-    virtual void fireBullet(const Enemy* targetEnemy, float bulletSpeed);
+    virtual void update(float deltaTime, std::vector<std::shared_ptr<Enemy>>& enemies, const sf::RenderWindow& window);
+    virtual void fireBullet(const std::shared_ptr<Enemy> targetEnemy, float bulletSpeed);
     
     const sf::RectangleShape& getShape() const { return shape; }
     virtual void draw(sf::RenderWindow& window);

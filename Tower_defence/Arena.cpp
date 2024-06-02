@@ -211,7 +211,7 @@ std::vector<std::unique_ptr<Tower>>& Arena::getTowers() {
     return towers;
 }
 
-std::vector<std::unique_ptr<Enemy>>& Arena::getEnemies() {
+std::vector<std::shared_ptr<Enemy>>& Arena::getEnemies() {
     return enemies;
 }
 

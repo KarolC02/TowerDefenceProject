@@ -27,7 +27,7 @@ class TowerDefenseAI:
             self.allocate_turrets_randomly()
             while not self.check_game_over():
                 self.random_game_actions()
-                time.sleep(1)  # Adjust the sleep time based on game requirements
+                time.sleep(0.1)  # Adjust the sleep time based on game requirements
             self.reset_game()
 
     def start_game(self):
@@ -54,18 +54,14 @@ class TowerDefenseAI:
 
     def random_game_actions(self):
         action = random.choice(['place', 'upgrade', 'sell'])
+        grid_x = random.randint(1, 25)
+        grid_y = random.randint(1, 21)
         if action == 'place':
             tower_type = random.randint(1, 5)
-            grid_x = random.randint(0, 14)
-            grid_y = random.randint(0, 14)
             self.send_command(f"placeTower {tower_type} {grid_x} {grid_y}")
         elif action == 'upgrade':
-            grid_x = random.randint(0, 14)
-            grid_y = random.randint(0, 14)
             self.send_command(f"upgradeTower {grid_x} {grid_y}")
         elif action == 'sell':
-            grid_x = random.randint(0, 14)
-            grid_y = random.randint(0, 14)
             self.send_command(f"sellTower {grid_x} {grid_y}")
 
     def check_game_over(self):

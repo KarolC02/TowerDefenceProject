@@ -283,6 +283,17 @@ void Arena::removeDeadOrOutOfBoundsEnemies() {
         }
     }
 
+    // Clear targets of bullets if their target is being removed
+    for (auto& tower : towers) {
+        for (auto& bullet : tower->getBullets()) {
+            for (int index : indicesToRemove) {
+                if (bullet->hasTarget(enemies[index])) {
+                    bullet->clearTarget();
+                }
+            }
+        }
+    }
+
     // Second pass: Remove identified enemies
     for (auto it = indicesToRemove.rbegin(); it != indicesToRemove.rend(); ++it) {
         enemies.erase(enemies.begin() + *it);
@@ -293,6 +304,7 @@ void Arena::removeDeadOrOutOfBoundsEnemies() {
         enemies.push_back(std::move(newEnemy));
     }
 }
+
 
 bool Arena::isWithinBounds(sf::Vector2f snappedPos) {
     return (snappedPos.x > LEFT_OFFSET && snappedPos.x < ARENA_WIDTH + LEFT_OFFSET

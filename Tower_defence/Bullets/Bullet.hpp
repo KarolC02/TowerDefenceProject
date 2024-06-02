@@ -11,6 +11,8 @@ private:
     int damage;
 
 public:
+    void clearTarget();
+    bool hasTarget(const std::shared_ptr<Enemy>& target) const;
     bool shouldBeRemoved() const;
     sf::CircleShape shape;
     void updateDirection();

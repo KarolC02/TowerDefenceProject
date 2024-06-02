@@ -2,7 +2,7 @@
   "PelletTower": {
     "initial": {
       "color": [105, 105, 105],
-      "attackSpeed": 0.1,
+      "attackSpeed": 2.5,
       "range": 500,
       "damage": 10,
       "cost": 5

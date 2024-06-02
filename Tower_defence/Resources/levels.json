@@ -3,7 +3,7 @@
         {
             "levelNumber": 1,
             "maxDuration": 35,
-            "numberOfEnemies": 10,
+            "numberOfEnemies": 100,
             "group": false,
             "health": 2000,
             "immune": false,

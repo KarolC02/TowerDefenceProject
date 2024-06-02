@@ -77,6 +77,7 @@ void Arena::loadNextLevel() {
 }
 
 void Arena::update(float dt, const sf::RenderWindow& window) {
+    
     manageLevels();
     spawnCurrentLevelEnemies();
     updateTowers(dt, window);
@@ -155,7 +156,6 @@ void Arena::drawBullets(sf::RenderWindow &window) const{
 }
 
 void Arena::drawTowers(sf::RenderWindow &window) const {
-    std::lock_guard<std::mutex> lock(towersMutex); // Lock the mutex
     for (const auto& tower : towers) {
         if (tower) {
             tower->draw(window);
@@ -221,7 +221,6 @@ bool Arena::addTower(std::unique_ptr<Tower> tower) {
     int gridX = getGridX(snappedPos.x);
     int gridY = getGridY(snappedPos.y);
     int towerCost = tower->getCost();
-    std::lock_guard<std::mutex> lock(towersMutex); // Lock the mutex
     
     std::cout << "Attempting to add tower at original position: (" << originalPos.x << ", " << originalPos.y << "), snapped to grid position: (" << gridX << ", " << gridY << ")\n";
 
@@ -438,7 +437,6 @@ void Arena::updateGridForNewTower(int gridX, int gridY) {
 
 bool Arena::deleteTower(const sf::Vector2f& position) {
     sf::Vector2f snappedPos = snapToGrid(position);
-    std::lock_guard<std::mutex> lock(towersMutex); // Lock the mutex
     for (auto it = towers.begin(); it != towers.end(); ++it) {
         if ((*it)->getPosition() == snappedPos) {
             int towerX = (*it)->getShape().getPosition().x;
@@ -463,7 +461,6 @@ bool Arena::deleteTower(const sf::Vector2f& position) {
 
 bool Arena::upgradeTower(const sf::Vector2f& position) {
     sf::Vector2f snappedPos = snapToGrid(position);
-    std::lock_guard<std::mutex> lock(towersMutex); // Lock the mutex
     for (auto& tower : towers) {
         if (tower->getPosition() == snappedPos) {
             if (tower->canUpgrade()) {

@@ -10,6 +10,7 @@
 #include "Enemy.hpp"
 #include "DEFINE.hpp"
 #include <mutex> // Include mutex
+#include <shared_mutex>
 
 class Arena {
 public:
@@ -85,7 +86,9 @@ private:
     
     
     std::vector<std::unique_ptr<Tower>> towers;
-    mutable std::mutex towersMutex;
+    
+    mutable std::shared_timed_mutex mtx;
+
     std::vector<std::unique_ptr<Enemy>> enemies;
     std::vector<sf::RectangleShape> pathCells;
 

@@ -17,6 +17,7 @@
 #include <mutex>
 #include <condition_variable>
 #include "SocketServer.hpp" // Include the socket server header
+#include "CommandQueue.hpp"
 
 class Game {
 public:
@@ -24,6 +25,7 @@ public:
     void Run();
     void placeTower(TowerType towerType, sf::Vector2f position);
     void placeTowerAtGrid(TowerType towerType, int gridX, int gridY);
+    void addCommand(std::function<void()> command);
     
     enum class GameState {
         Default,
@@ -41,7 +43,7 @@ public:
     void sellTowerAtGrid(int gridX, int gridY);
     void upgradeTowerAtGrid(int gridX, int gridY);
     void resetGame();
-    
+    bool getGameOver() const;
 private:
     
     sf::RectangleShape gameOverOverlay;
@@ -72,8 +74,12 @@ private:
     std::unique_ptr<Tower> previewTower;
     GameState currentState;
     sf::RenderWindow window;
-    std::vector<std::unique_ptr<Tower>> towers;
-    std::vector<Enemy> enemies;
+//    std::vector<std::unique_ptr<Tower>> towers;
+//    std::vector<Enemy> enemies;
+    
+    mutable std::mutex gameMutex; // Mutex to protect game state
+    CommandQueue commandQueue;    // Command queue to serialize commands
+    
     sf::Font gameFont;
     
     sf::Text timeText, levelText, livesText, goldText, scoreText;

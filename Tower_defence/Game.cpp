@@ -164,6 +164,12 @@ void Game::Run() {
         }
         handleMouseHover(sf::Mouse::getPosition(window));
         render();
+        
+        std::function<void()> command;
+        while (commandQueue.pop(command)) {
+            command();
+        }
+        
     }
     socketServer.stop(); // Stop the socket server
 }
@@ -512,17 +518,6 @@ void Game::handleMouseHover(sf::Vector2i hoverPosition) {
     }
 }
 
-bool Game::isFreeSpace(const sf::Vector2f& gridPosition) const {
-    for (const auto& tower : towers) {
-        if (std::abs(gridPosition.x - tower->getShape().getPosition().x) < GRID_CELL_SIZE * 2 && std::abs(gridPosition.y - tower->getShape().getPosition().y) < GRID_CELL_SIZE * 2) {
-            // This means the new tower's position is too close to an existing
-            // tower (i.e., overlapping)
-            return false;
-        }
-    }
-    return true;  // No existing tower is too close
-}
-
 bool Game::collision(const sf::Shape& shape1, const sf::Shape& shape2) const {
     return shape1.getGlobalBounds().intersects(shape2.getGlobalBounds());
 }
@@ -530,21 +525,17 @@ bool Game::collision(const sf::Shape& shape1, const sf::Shape& shape2) const {
 void Game::setCurrentlyPlacing(TowerType type) { currentlyPlacing = type; }
 
 void Game::resetGame() {
-    // Reset the arena
-    arena = std::make_unique<Arena>(ARENA_WIDTH, ARENA_HEIGHT, sf::Vector2f(LEFT_OFFSET, TOP_OFFSET));
-    // Reset other game states as needed
-    gameOver = false;
-    currentState = GameState::Default;
-    currentlyPlacing = TowerType::None;
-    previewTower = nullptr;  // Reset or remove the preview tower
-    showPreview = false;
-    showTowerMenu = false;
-    gameStarted = false;  // Reset gameStarted to false
-    // Clear enemies, towers, and other game elements if stored in lists or
-    // vectors
-    enemies.clear();
-    towers.clear();
-    // std::cout << "Game has been reset.\n";
+    addCommand([this]() {
+        std::unique_lock<std::mutex> lock(gameMutex);
+        arena = std::make_unique<Arena>(ARENA_WIDTH, ARENA_HEIGHT, sf::Vector2f(LEFT_OFFSET, TOP_OFFSET));
+        gameOver = false;
+        currentState = GameState::Default;
+        currentlyPlacing = TowerType::None;
+        previewTower = nullptr;
+        showPreview = false;
+        showTowerMenu = false;
+        gameStarted = false;
+    });
 }
 
 sf::Vector2i Game::getGridPosition(const sf::Vector2f& position) const {
@@ -617,40 +608,58 @@ void Game::placeTower(TowerType towerType, sf::Vector2f worldPos) {
     return;  // Break after handling the placement state
 }
 
-void Game::placeTowerAtGrid(TowerType towerType, int gridX, int gridY) {
-    sf::Vector2f position = getGridCellPosition(gridX, gridY);
-    std::cout << "Placing tower at grid (" << gridX << ", " << gridY << ") which translates to position (" << position.x << ", " << position.y << ")\n";
-    placeTower(towerType, position);
+bool Game::getGameOver() const {
+    std::lock_guard<std::mutex> lock(gameMutex);
+    return gameOver;
 }
 
+void Game::placeTowerAtGrid(TowerType towerType, int gridX, int gridY) {
+    addCommand([this, towerType, gridX, gridY]() {
+        sf::Vector2f position = getGridCellPosition(gridX, gridY);
+        placeTower(towerType, position);
+    });
+}
+
+void Game::sellTowerAtGrid(int gridX, int gridY) {
+    addCommand([this, gridX, gridY]() {
+        sf::Vector2f position = getGridCellPosition(gridX, gridY);
+        std::unique_lock<std::mutex> lock(gameMutex);
+        std::cout << "Selling tower at grid (" << gridX << ", " << gridY << ") which translates to position (" << position.x << ", " << position.y << ")\n";
+        if (arena->deleteTower(position)) {
+            std::cout << "Tower sold successfully.\n";
+        } else {
+            std::cout << "No tower found at the given position.\n";
+        }
+    });
+}
+
+void Game::upgradeTowerAtGrid(int gridX, int gridY) {
+    addCommand([this, gridX, gridY]() {
+        sf::Vector2f position = getGridCellPosition(gridX, gridY);
+        std::unique_lock<std::mutex> lock(gameMutex);
+        std::cout << "Upgrading tower at grid (" << gridX << ", " << gridY << ") which translates to position (" << position.x << ", " << position.y << ")\n";
+        if (arena->upgradeTower(position)) {
+            std::cout << "Tower upgraded successfully.\n";
+        } else {
+            std::cout << "Failed to upgrade tower.\n";
+        }
+    });
+}
+
+void Game::startGame() {
+    addCommand([this]() {
+        std::unique_lock<std::mutex> lock(gameMutex);
+        gameStarted = true;
+    });
+}
+
+void Game::addCommand(std::function<void()> command) {
+    commandQueue.push(command);
+}
 
 sf::Vector2f Game::getGridCellPosition(int gridX, int gridY) const {
     // Calculate the world position based on grid coordinates and grid cell size
     float xPos = LEFT_OFFSET + (gridX + 1) * GRID_CELL_SIZE;
     float yPos = TOP_OFFSET + (gridY + 1) * GRID_CELL_SIZE;
     return sf::Vector2f(xPos, yPos);
-}
-
-void Game::sellTowerAtGrid(int gridX, int gridY) {
-    sf::Vector2f position = getGridCellPosition(gridX, gridY);
-    std::cout << "Selling tower at grid (" << gridX << ", " << gridY << ") which translates to position (" << position.x << ", " << position.y << ")\n";
-    if (arena->deleteTower(position)) {
-        std::cout << "Tower sold successfully.\n";
-    } else {
-        std::cout << "No tower found at the given position.\n";
-    }
-}
-
-void Game::upgradeTowerAtGrid(int gridX, int gridY) {
-    sf::Vector2f position = getGridCellPosition(gridX, gridY);
-    std::cout << "Upgrading tower at grid (" << gridX << ", " << gridY << ") which translates to position (" << position.x << ", " << position.y << ")\n";
-    if (arena->upgradeTower(position) ){
-        std::cout << "Tower upgraded successfully.\n";
-    } else {
-        std::cout << "Failed to upgrade tower.\n";
-    }
-}
-
-void Game::startGame(){
-    gameStarted = true;
 }

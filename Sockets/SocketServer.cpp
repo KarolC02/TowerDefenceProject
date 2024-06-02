@@ -14,6 +14,7 @@ SocketServer::~SocketServer() {
 
 void SocketServer::start() {
     running = true;
+    log("Starting server...");
     serverThread = std::thread(&SocketServer::acceptConnections, this);
 }
 
@@ -21,6 +22,7 @@ void SocketServer::stop() {
     if (running) {
         running = false;
         close(serverSocket);
+        log("Server stopped.");
         if (serverThread.joinable()) {
             serverThread.join();
         }
@@ -77,28 +79,43 @@ void SocketServer::handleClient(int clientSocket) {
 
             log("Received command: " + command);
 
+            std::string response;
             if (command.find("placeTower") == 0) {
                 int towerType, gridX, gridY;
                 sscanf(command.c_str(), "placeTower %d %d %d", &towerType, &gridX, &gridY);
                 game.placeTowerAtGrid(static_cast<TowerType>(towerType), gridX, gridY);
+                response = "OK\n";
             } else if (command.find("sellTower") == 0) {
                 int gridX, gridY;
                 sscanf(command.c_str(), "sellTower %d %d", &gridX, &gridY);
                 game.sellTowerAtGrid(gridX, gridY);
+                response = "OK\n";
             } else if (command.find("upgradeTower") == 0) {
                 int gridX, gridY;
                 sscanf(command.c_str(), "upgradeTower %d %d", &gridX, &gridY);
                 game.upgradeTowerAtGrid(gridX, gridY);
+                response = "OK\n";
             } else if (command.find("startGame") == 0) {
                 game.startGame();
+                response = "OK\n";
             } else if (command.find("resetGame") == 0) {
                 game.resetGame();
+                response = "OK\n";
+            } else if (command.find("skipLevel") == 0) {
+                // game.skipLevel();
+                response = "OK\n";
+            } else if (command.find("getGameOver") == 0) {
+                response = game.getGameOver() ? "true\n" : "false\n";
+            } else {
+                response = "Unknown command\n";
             }
 
-            std::string response = "OK\n";
             write(clientSocket, response.c_str(), response.size());
+        } else {
+            log("Failed to read from client socket");
         }
         close(clientSocket);
+        log("Client disconnected");
     }).detach();
 }
 

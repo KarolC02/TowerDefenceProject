@@ -91,7 +91,9 @@ void Tower::draw(sf::RenderWindow& window) {
 
 void Tower::drawBullets(sf::RenderWindow& window){
     for (const auto& bullet : bullets) {
-        bullet->draw(window);
+        if( bullet ){
+            bullet->draw(window);
+        }
     }
 }
 

@@ -44,7 +44,7 @@ void SwarmTower::update(float deltaTime, std::vector<std::unique_ptr<Enemy>>& en
         }
 
         if (!targets.empty()) {
-            std::cout << "FIRING " << targets.size() << " Bullets!" << std::endl;
+            // std::cout << "FIRING " << targets.size() << " Bullets!" << std::endl;
             for (auto* target : targets) {
                 fireBullet(target, bulletSpeed);
             }

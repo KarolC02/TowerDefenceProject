@@ -31,7 +31,7 @@ std::vector<Level> LevelManager::loadLevels(const std::string& filename) {
                 j["value"].get<int>()
             );
         } else {
-            std::cout << "level number " << j["levelNumber"] << std::endl;
+            // std::cout << "level number " << j["levelNumber"] << std::endl;
             throw std::runtime_error("Missing one or more level properties in JSON file. ");
         }
     }

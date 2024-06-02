@@ -43,9 +43,9 @@ void Bullet::update(float deltaTime, const std::vector<std::unique_ptr<Enemy>>& 
     shape.move(movement);
 
     // Debug prints to track bullet behavior
-    std::cout << "Bullet position: " << shape.getPosition().x << ", " << shape.getPosition().y << std::endl;
-    std::cout << "Bullet direction: " << direction.x << ", " << direction.y << std::endl;
-    std::cout << "Target position: " << (targetEnemy ? targetEnemy->getPosition().x : -1) << ", " << (targetEnemy ? targetEnemy->getPosition().y : -1) << std::endl;
+    // std::cout << "Bullet position: " << shape.getPosition().x << ", " << shape.getPosition().y << std::endl;
+    // std::cout << "Bullet direction: " << direction.x << ", " << direction.y << std::endl;
+    // std::cout << "Target position: " << (targetEnemy ? targetEnemy->getPosition().x : -1) << ", " << (targetEnemy ? targetEnemy->getPosition().y : -1) << std::endl;
 }
 
 void Bullet::draw(sf::RenderWindow& window) const {

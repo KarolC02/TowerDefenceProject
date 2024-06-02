@@ -5,13 +5,14 @@
 #include <stdexcept>
 #include "JsonUtils.hpp"
 
-static sf::Font towerFont;
-
 Tower::Tower(sf::Vector2f position, sf::Color color, float atkSpeed, int rng, const std::string& typeSymbol, int dmg, int cst)
     : attackSpeed(atkSpeed), range(rng), damage(dmg), cost(cst), attackCooldown(0.0f), currentLevel(0) {
+
+        
     if (!towerFont.loadFromFile(resourcePath() + "arial.ttf")) {
         throw std::runtime_error("Failed to load font!");
     }
+
 
     bulletSpeed = getJsonValue(CONFIG_PATH, "BULLET_SPEED");
 
@@ -86,6 +87,9 @@ int Tower::getNextUpgradeRange() const {
 void Tower::draw(sf::RenderWindow& window) {
     window.draw(shape);
     window.draw(text);
+}
+
+void Tower::drawBullets(sf::RenderWindow& window){
     for (const auto& bullet : bullets) {
         bullet->draw(window);
     }
@@ -113,7 +117,7 @@ void Tower::eraseOutOfScreenBullets(const sf::RenderWindow& window) {
 
 void Tower::fireBullet(const Enemy* targetEnemy, float bulletSpeed) {
     if (canAttack()) {
-        std::cout << "Firing bullet at enemy: " << targetEnemy->getPosition().x << ", " << targetEnemy->getPosition().y << std::endl;
+        // std::cout << "Firing bullet at enemy: " << targetEnemy->getPosition().x << ", " << targetEnemy->getPosition().y << std::endl;
         bullets.emplace_back(std::make_unique<Bullet>(shape.getPosition(), targetEnemy, bulletSpeed, damage));
         resetCooldown();
     }
@@ -189,4 +193,8 @@ int Tower::getRange() const {
 
 std::string Tower::getInfo() const {
     return info;
+}
+
+void Tower::clearBullets() {
+    bullets.clear();
 }

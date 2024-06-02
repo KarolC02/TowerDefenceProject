@@ -44,6 +44,7 @@
 		F985966C2BBC74B900A905CE /* arial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F985966B2BBC74B900A905CE /* arial.ttf */; };
 		F991016F2C0A2BAE0091293D /* JsonUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F991016D2C0A2BAE0091293D /* JsonUtils.cpp */; };
 		F99101712C0A2C960091293D /* towers.json in Resources */ = {isa = PBXBuildFile; fileRef = F99101702C0A2C960091293D /* towers.json */; };
+		F991017E2C0C7B190091293D /* SocketServer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F991017C2C0C7B190091293D /* SocketServer.cpp */; };
 		F9A185C12BC2E1B300D913F3 /* Enemy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A185BF2BC2E1B300D913F3 /* Enemy.cpp */; };
 		F9A185C42BC2E1DC00D913F3 /* Tower.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9A185C22BC2E1DC00D913F3 /* Tower.cpp */; };
 		F9ADE5F52BDFF4AF00CD8434 /* Pathfinder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F9ADE5F32BDFF4AF00CD8434 /* Pathfinder.cpp */; };
@@ -120,6 +121,8 @@
 		F991016D2C0A2BAE0091293D /* JsonUtils.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = JsonUtils.cpp; sourceTree = "<group>"; };
 		F991016E2C0A2BAE0091293D /* JsonUtils.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = JsonUtils.hpp; sourceTree = "<group>"; };
 		F99101702C0A2C960091293D /* towers.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = towers.json; sourceTree = "<group>"; };
+		F991017C2C0C7B190091293D /* SocketServer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SocketServer.cpp; sourceTree = "<group>"; };
+		F991017D2C0C7B190091293D /* SocketServer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SocketServer.hpp; sourceTree = "<group>"; };
 		F9A185BF2BC2E1B300D913F3 /* Enemy.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Enemy.cpp; sourceTree = "<group>"; };
 		F9A185C02BC2E1B300D913F3 /* Enemy.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Enemy.hpp; sourceTree = "<group>"; };
 		F9A185C22BC2E1DC00D913F3 /* Tower.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Tower.cpp; sourceTree = "<group>"; };
@@ -167,6 +170,7 @@
 		F9299B2A2BB30CAC00071A1B = {
 			isa = PBXGroup;
 			children = (
+				F991017B2C0C7B090091293D /* Sockets */,
 				F9299B362BB30CAC00071A1B /* Tower_defence */,
 				F9299B352BB30CAC00071A1B /* Products */,
 				F9299B4C2BB30CDB00071A1B /* Frameworks */,
@@ -240,6 +244,15 @@
 				F9299B4D2BB30CDB00071A1B /* sfml-audio.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F991017B2C0C7B090091293D /* Sockets */ = {
+			isa = PBXGroup;
+			children = (
+				F991017C2C0C7B190091293D /* SocketServer.cpp */,
+				F991017D2C0C7B190091293D /* SocketServer.hpp */,
+			);
+			path = Sockets;
 			sourceTree = "<group>";
 		};
 		F9ADE5F22BDFF49B00CD8434 /* Utils */ = {
@@ -406,6 +419,7 @@
 				F9F397492BC7F180001DBCDF /* TowerButton.cpp in Sources */,
 				F9ADE5F52BDFF4AF00CD8434 /* Pathfinder.cpp in Sources */,
 				F93DD32E2BC5799A00F903F1 /* SwarmTower.cpp in Sources */,
+				F991017E2C0C7B190091293D /* SocketServer.cpp in Sources */,
 				F96DF3082BF52F4900830FF9 /* Particle.cpp in Sources */,
 				F91605642BD5863D0009275D /* Button.cpp in Sources */,
 				F9016F732BF283EF00D47A76 /* LevelManager.cpp in Sources */,

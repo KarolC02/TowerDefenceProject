@@ -9,6 +9,7 @@
 #include "Tower.hpp"
 #include "Enemy.hpp"
 #include "DEFINE.hpp"
+#include <mutex> // Include mutex
 
 class Arena {
 public:
@@ -24,7 +25,7 @@ public:
 
     bool addTower(std::unique_ptr<Tower> tower);
     bool deleteTower(const sf::Vector2f& position);
-    bool upgradeTower(const sf::Vector2f& position, int gold);
+    bool upgradeTower(const sf::Vector2f& position);
     
     sf::Vector2f snapToGrid(const sf::Vector2f& position) const;
     bool isSpaceFree(const sf::Vector2f& position);
@@ -58,14 +59,33 @@ public:
     int scorePayCheck;
     int livesDebt;
     float pausedTime;
+    void reset();
+    
+    int getLives() const;
+    void setLives(int lives);
+    int getGold() const;
+    void setGold(int gold);
+    int getScore() const;
+    void setScore(int score);
+    int getLevel() const;
+    void setLevel(int score);
     
 private:
+    
+    int lives;
+    int gold;
+    int score;
+    int level;
+    
+    void drawBullets(sf::RenderWindow &window) const;
+    
     sf::RectangleShape background;
     sf::RectangleShape topFrame1, topFrame2, topFrame3;
     sf::RectangleShape bottomFrame1, bottomFrame2, bottomFrame3;
     
     
     std::vector<std::unique_ptr<Tower>> towers;
+    mutable std::mutex towersMutex;
     std::vector<std::unique_ptr<Enemy>> enemies;
     std::vector<sf::RectangleShape> pathCells;
 

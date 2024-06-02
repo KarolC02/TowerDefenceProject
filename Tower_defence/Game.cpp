@@ -9,14 +9,16 @@
 #include "SwarmTower.hpp"
 #include <cstdlib>
 #include <iostream>
+#include <sstream>
 
-Game::Game()
+Game::Game(int port)
     : window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Desktop Tower Defence"),
-      arena(ARENA_WIDTH, ARENA_HEIGHT, sf::Vector2f(LEFT_OFFSET, TOP_OFFSET)),
+      arena(std::make_unique<Arena>(ARENA_WIDTH, ARENA_HEIGHT, sf::Vector2f(LEFT_OFFSET, TOP_OFFSET))),
       currentState(GameState::Default),
       currentlyPlacing(TowerType::None),
-      gold(getJsonValue(CONFIG_PATH, "START_MONEY")),
-      gameStarted(false) {  // Initialize gameStarted to false
+      gameStarted(false),
+      socketServer(port, *this),
+      gameOver(false){
 
     if (!gameFont.loadFromFile(resourcePath() + "arial.ttf")) {
         throw std::runtime_error("Failed to load font!");
@@ -73,6 +75,10 @@ Game::Game()
         sf::FloatRect textRect = pausedText.getLocalBounds();
         pausedText.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
         pausedText.setPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+        
+        // Initialize game over overlay
+        
+        
 
         sf::Vector2f buttonPosition(WINDOW_WIDTH - 8 * TOWER_SIDE_LENGTH, WINDOW_HEIGHT / 4);
         sf::Vector2f buttonSize(TOWER_SIDE_LENGTH, TOWER_SIDE_LENGTH);
@@ -140,6 +146,28 @@ Game::Game()
     UpgradeTowerButton = Button(upgradeTowerButtonPosition, upgradeTowerButtonSize, upgradeTowerButtonText, sf::Color(122, 41, 41, 240));
 }
 
+void Game::Run() {
+    sf::Clock clock;
+    socketServer.start(); // Start the socket server
+    const float timestep = 1.0f / 60.0f;
+    float accumulator = 0.0f;
+
+    while (window.isOpen()) {
+        sf::Time deltaTime = clock.restart();
+        accumulator += deltaTime.asSeconds();
+
+        processEvents();
+
+        while (accumulator >= timestep) {
+            accumulator -= timestep;
+            update(timestep);
+        }
+        handleMouseHover(sf::Mouse::getPosition(window));
+        render();
+    }
+    socketServer.stop(); // Stop the socket server
+}
+
 void Game::setupText(sf::Text& text, const std::string& value, float x, float y, sf::Color color) {
     text.setFont(gameFont);
     text.setString(value);
@@ -152,10 +180,10 @@ void Game::setupText(sf::Text& text, const std::string& value, float x, float y,
 
 void Game::updateStatsDisplay() {
     timeText.setString("Time: " + std::to_string(time));
-    levelText.setString("Level: " + std::to_string(level));
-    livesText.setString("Lives: " + std::to_string(lives));
-    goldText.setString("Gold: " + std::to_string(gold));
-    scoreText.setString("Score: " + std::to_string(score));
+    levelText.setString("Level: " + std::to_string(arena->getLevel()));
+    livesText.setString("Lives: " + std::to_string(arena->getLives()));
+    goldText.setString("Gold: " + std::to_string(arena->getGold()));
+    scoreText.setString("Score: " + std::to_string(arena->getScore()));
 }
 
 void Game::updateTowerMenuInfo(Tower& tower) {
@@ -200,26 +228,6 @@ void Game::updateUpgradeDisplayInfo(Tower& tower) {
     }
 }
 
-void Game::Run() {
-    sf::Clock clock;
-    const float timestep = 1.0f / 60.0f;
-    float accumulator = 0.0f;
-
-    while (window.isOpen()) {
-        sf::Time deltaTime = clock.restart();
-        accumulator += deltaTime.asSeconds();
-
-        processEvents();
-
-        while (accumulator >= timestep) {
-            accumulator -= timestep;
-            update(timestep);
-        }
-        handleMouseHover(sf::Mouse::getPosition(window));
-        render();
-    }
-}
-
 void Game::processEvents() {
     sf::Event event;
     while (window.pollEvent(event)) {
@@ -227,7 +235,7 @@ void Game::processEvents() {
             case sf::Event::KeyPressed:
                 if (event.key.code == sf::Keyboard::R) {
                     // Reload configuration when 'R' key is pressed
-                    std::cout << "Reloading config file: " << CONFIG_PATH << std::endl;
+                    // std::cout << "Reloading config file: " << CONFIG_PATH << std::endl;
                     printJsonFile(CONFIG_PATH);
                 }
                 break; // Add break to prevent fall-through
@@ -240,7 +248,7 @@ void Game::processEvents() {
                 if (PauseButton.isMouseOver(window)) {
                     if (currentState == GameState::Paused) { // Resume the game
                         currentState = GameState::Default;
-                        arena.pausedTime += pausedClock.getElapsedTime().asSeconds();
+                        arena->pausedTime += pausedClock.getElapsedTime().asSeconds();
                         pausedClock.restart();
 
                     } else {
@@ -248,10 +256,10 @@ void Game::processEvents() {
                         pausedClock.restart();
                     }
                 } else if (StartButton.isMouseOver(window) && !gameStarted) {
-                    std::cout << "Start Button Clicked\n";
+                    // std::cout << "Start Button Clicked\n";
                     gameStarted = true;  // Start the game
                 } else if (pelletTowerButton.isMouseOver(window)) {
-                    std::cout << "Pellet Tower Button Clicked\n";
+                    // std::cout << "Pellet Tower Button Clicked\n";
                     currentState = GameState::PlacingTower;
                     previewTower = std::make_unique<PelletTower>(sf::Vector2f(0, 0));  // Position will be updated on hover
                     currentlyPlacing = TowerType::Pellet;
@@ -259,7 +267,7 @@ void Game::processEvents() {
                     showTowerMenu = false;
                     updateTowerDisplayInfo(*previewTower);
                 } else if (SwarmTowerButton.isMouseOver(window)) {
-                    std::cout << "Swarm Tower Button Clicked\n";
+                    // std::cout << "Swarm Tower Button Clicked\n";
                     currentState = GameState::PlacingTower;
                     previewTower = std::make_unique<SwarmTower>(sf::Vector2f(0, 0));  // Adjust the class name as necessary
                     currentlyPlacing = TowerType::Swarm;
@@ -267,7 +275,7 @@ void Game::processEvents() {
                     showTowerMenu = false;
                     updateTowerDisplayInfo(*previewTower);
                 } else if (DartTowerButton.isMouseOver(window)) {
-                    std::cout << "Dart Tower Button Clicked\n";
+                    // std::cout << "Dart Tower Button Clicked\n";
                     currentState = GameState::PlacingTower;
                     previewTower = std::make_unique<DartTower>(sf::Vector2f(0, 0));  // Adjust the class name as necessary
                     currentlyPlacing = TowerType::Dart;
@@ -275,7 +283,7 @@ void Game::processEvents() {
                     showTowerMenu = false;
                     updateTowerDisplayInfo(*previewTower);
                 } else if (SquirtTowerButton.isMouseOver(window)) {
-                    std::cout << "Squirt Tower Button Clicked\n";
+                    // std::cout << "Squirt Tower Button Clicked\n";
                     currentState = GameState::PlacingTower;
                     previewTower = std::make_unique<SquirtTower>(sf::Vector2f(0, 0));  // Adjust the class name as necessary
                     currentlyPlacing = TowerType::Squirt;
@@ -283,7 +291,7 @@ void Game::processEvents() {
                     showTowerMenu = false;
                     updateTowerDisplayInfo(*previewTower);
                 } else if (BashTowerButton.isMouseOver(window)) {
-                    std::cout << "Bash Tower Button Clicked\n";
+                    // std::cout << "Bash Tower Button Clicked\n";
                     currentState = GameState::PlacingTower;
                     previewTower = std::make_unique<BashTower>(sf::Vector2f(0, 0));  // Adjust the class name as necessary
                     currentlyPlacing = TowerType::Bash;
@@ -291,7 +299,7 @@ void Game::processEvents() {
                     showTowerMenu = false;
                     updateTowerDisplayInfo(*previewTower);
                 } else if (FrostTowerButton.isMouseOver(window)) {
-                    std::cout << "Frost Tower Button Clicked\n";
+                    // std::cout << "Frost Tower Button Clicked\n";
                     currentState = GameState::PlacingTower;
                     previewTower = std::make_unique<FrostTower>(sf::Vector2f(0, 0));  // Adjust the class name as necessary
                     currentlyPlacing = TowerType::Frost;
@@ -308,27 +316,16 @@ void Game::processEvents() {
 }
 
 void Game::update(float dt) {
-    if (currentState != GameState::Paused && gameStarted) {
-        arena.update(dt, window);
-        time = arena.currentLevel.maxDuration - (int)arena.currentLevelTimer.getElapsedTime().asSeconds() + arena.pausedTime;
-        level = arena.currentLevel.levelNumber;
-        updateDebts();
-    }
-}
-
-void Game::updateDebts() {
-    if (arena.payCheck != 0) {
-        gold += arena.payCheck;
-        arena.payCheck = 0;
-    }
-    if (arena.livesDebt != 0) {
-        lives -= arena.livesDebt;
-        arena.livesDebt = 0;
-    }
-
-    if (arena.scorePayCheck != 0) {
-        score += arena.scorePayCheck;
-        arena.scorePayCheck = 0;
+    if( !gameOver ){
+        if (currentState != GameState::Paused && gameStarted) {
+            arena->update(dt, window);
+            time = arena->currentLevel.maxDuration - (int)arena->currentLevelTimer.getElapsedTime().asSeconds() + arena->pausedTime;
+        }
+        if( arena->getLives() <= 0 ){
+            gameOver = true;
+        }
+    }else{
+        
     }
 }
 
@@ -337,7 +334,7 @@ void Game::render() {
     updateStatsDisplay();
     displayInfoBar(window);
     displayTowerInfo(window);
-    arena.draw(window);
+    arena->draw(window);
     if (showTowerMenu) {
         SellTowerButton.draw(window);
         UpgradeTowerButton.draw(window);
@@ -361,7 +358,6 @@ void Game::render() {
         rangeCircle.setOrigin(previewTower->getRange(), previewTower->getRange());  // Center the circle on the tower
         window.draw(rangeCircle);
     }
-    window.draw(dot);
     if (showTowerMenu) {
         window.draw(towerRangeCircle);
     }
@@ -371,6 +367,18 @@ void Game::render() {
         window.draw(pauseOverlay);
         // Draw the "Paused" text
         window.draw(pausedText);
+    }
+    if( gameOver ){
+        window.draw(pauseOverlay);
+        gameOverText.setFont(gameFont);
+        gameOverText.setString("Game Over! Your score is " + std::to_string(arena->getScore()));
+        gameOverText.setCharacterSize(50);
+        gameOverText.setFillColor(sf::Color::White);
+        gameOverText.setStyle(sf::Text::Bold);
+        sf::FloatRect textRect1 = gameOverText.getLocalBounds();
+        gameOverText.setOrigin(textRect1.left + textRect1.width / 2.0f, textRect1.top + textRect1.height / 2.0f);
+        gameOverText.setPosition(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+        window.draw(gameOverText);
     }
 
     window.display();
@@ -418,95 +426,42 @@ void Game::setGameState(GameState newState) { currentState = newState; }
 
 void Game::handleMouseClick(sf::Vector2i clickPosition) {
     sf::Vector2f worldPos = window.mapPixelToCoords(clickPosition);
-    sf::Vector2f snappedPos = arena.snapToGrid(worldPos);
+    sf::Vector2f snappedPos = arena->snapToGrid(worldPos);
     if (ResetButton.isMouseOver(window)) {
-        std::cout << "Reset Button Clicked\n";
+        // std::cout << "Reset Button Clicked\n";
         resetGame();
     }
     if (SellTowerButton.isMouseOver(window) && showTowerMenu == true) {
-        std::cout << "Sell Tower Button clicked\n";
-        arena.deleteTower(towerRangeCircle.getPosition());
+        // std::cout << "Sell Tower Button clicked\n";
+        arena->deleteTower(towerRangeCircle.getPosition());
     }
     if (UpgradeTowerButton.isMouseOver(window) && showTowerMenu == true) {
-        std::cout << "Upgrade Tower Button clicked\n";
-        arena.upgradeTower(towerRangeCircle.getPosition(), gold);
+        // std::cout << "Upgrade Tower Button clicked\n";
+        arena->upgradeTower(towerRangeCircle.getPosition());
     }
-
+    
     switch (currentState) {
         case GameState::PlacingTower: {
-            std::cout << "Attempting to place a tower...\n";
-
-            // Handling no tower type selected
-            if (currentlyPlacing == TowerType::None) {
-                std::cerr << "ERROR: No tower type selected!\n";
-                window.close();
-                break;  // Exiting after the error handling
-            }
-
-            // Declare a base class pointer for polymorphism
-            std::unique_ptr<Tower> tower;
-            // Decide which type of tower to create based on the currently
-            // selected type
-            switch (currentlyPlacing) {
-                case TowerType::Pellet:
-                    tower = std::make_unique<PelletTower>(worldPos);
-                    break;
-                case TowerType::Bash:
-                    // Assuming BashTower is a valid class inheriting from Tower
-                    tower = std::make_unique<BashTower>(worldPos);
-                    break;
-                case TowerType::Squirt:
-                    tower = std::make_unique<SquirtTower>(worldPos);
-                    break;
-                case TowerType::Frost:
-                    tower = std::make_unique<FrostTower>(worldPos);
-                    break;
-                case TowerType::Swarm:
-                    tower = std::make_unique<SwarmTower>(worldPos);
-                    break;
-                case TowerType::Dart:
-                    // Assuming DartTower is a valid class inheriting from Tower
-                    tower = std::make_unique<DartTower>(worldPos);
-                    break;
-                default:
-                    std::cerr << "ERROR: Unknown tower type!\n";
-                    break;
-            }
-            currentState = GameState::Default;
-
-            // If a tower was successfully created, add it to the game arena or
-            // similar
-            int towerCost = tower->cost;
-            if (towerCost > gold) {
-                std::cout << "Not enough gold! " << std::endl;
-                currentState = GameState::Default;
-                break;
-            }
-            if (arena.addTower(std::move(tower))) {
-                gold -= towerCost;
-                std::cout << "Tower placed successfully.\n";
-                currentState = GameState::Default;
-            }
-            showTowerMenu = false;
-            break;  // Break after handling the placement state
+            placeTower(currentlyPlacing, worldPos);
+            break;
         }
 
         case GameState::Default: {
-            std::cout << "Executing handleMouseClick for state: Default" << std::endl;
+            // std::cout << "Executing handleMouseClick for state: Default" << std::endl;
             int gridX = getGridPosition(worldPos).x;
             int gridY = getGridPosition(worldPos).y;
             if (gridX >= 1 && gridX <= 26 && gridY >= 1 && gridY <= 2 * GRID_HEIGHT - 1) {
-                if (arena.grid[gridX][gridY] == true) {
-                    std::cout << "There are " << arena.getTowers().size() << "worldPos.y" << std::endl;
-                    for (const auto& uniquePtr : arena.getTowers()) {
+                if (arena->grid[gridX][gridY] == true) {
+                    // std::cout << "There are " << arena->getTowers().size() << "worldPos.y" << std::endl;
+                    for (const auto& uniquePtr : arena->getTowers()) {
                         Tower& tower = *uniquePtr;
                         if (abs(tower.getPosition().x - worldPos.x) <= GRID_CELL_SIZE && abs(tower.getPosition().y - worldPos.y) <= GRID_CELL_SIZE) {
-                            std::cout << "tower at Position " << tower.getPosition().x << " " << tower.getPosition().y << std::endl;
-                            std::cout << "Mouse at position " << worldPos.x << " " << worldPos.y << std::endl;
+                            // std::cout << "tower at Position " << tower.getPosition().x << " " << tower.getPosition().y << std::endl;
+                            // std::cout << "Mouse at position " << worldPos.x << " " << worldPos.y << std::endl;
 
                             updateTowerMenuInfo(tower);
                             showTowerMenu = true;
-                            std::cout << "HERE " << std::endl;
+                            // std::cout << "HERE " << std::endl;
                             return;
                         }
                     }
@@ -516,13 +471,13 @@ void Game::handleMouseClick(sf::Vector2i clickPosition) {
             break;
         }
         case GameState::TowerSelected: {
-            std::cout << "Executing handleMouseClick for state: TowerSelected" << std::endl;
+            // std::cout << "Executing handleMouseClick for state: TowerSelected" << std::endl;
             showTowerMenu = false;
             // Handle tower selected state mouse clicks
             break;
         }
         default: {
-            std::cout << "Mouse click received in an undefined game state." << std::endl;
+            // std::cout << "Mouse click received in an undefined game state." << std::endl;
             showTowerMenu = false;
             break;
         }
@@ -531,10 +486,10 @@ void Game::handleMouseClick(sf::Vector2i clickPosition) {
 
 void Game::handleMouseHover(sf::Vector2i hoverPosition) {
     sf::Vector2f worldPos = window.mapPixelToCoords(hoverPosition);
-    sf::Vector2f snappedPos = arena.snapToGrid(worldPos);
+    sf::Vector2f snappedPos = arena->snapToGrid(worldPos);
     dot.setPosition(snappedPos);  // Set the position of the dot
     if (currentState == GameState::PlacingTower) {
-        if (arena.isWithinBounds(snappedPos)) {
+        if (arena->isWithinBounds(snappedPos)) {
             if (!previewTower) {
                 previewTower = std::make_unique<PelletTower>(snappedPos);
             } else {
@@ -542,7 +497,7 @@ void Game::handleMouseHover(sf::Vector2i hoverPosition) {
             }
 
             // Check if the space is free and update the color accordingly
-            if (arena.isSpaceFree(snappedPos) && gold >= previewTower->cost) {
+            if (arena->isSpaceFree(snappedPos) && arena->getGold() >= previewTower->cost) {
                 showPreview = true;
                 previewTower->setColor(sf::Color::Green);  // Default color
             } else {
@@ -576,8 +531,9 @@ void Game::setCurrentlyPlacing(TowerType type) { currentlyPlacing = type; }
 
 void Game::resetGame() {
     // Reset the arena
-    arena = Arena(ARENA_WIDTH, ARENA_HEIGHT, sf::Vector2f(LEFT_OFFSET, TOP_OFFSET));
+    arena = std::make_unique<Arena>(ARENA_WIDTH, ARENA_HEIGHT, sf::Vector2f(LEFT_OFFSET, TOP_OFFSET));
     // Reset other game states as needed
+    gameOver = false;
     currentState = GameState::Default;
     currentlyPlacing = TowerType::None;
     previewTower = nullptr;  // Reset or remove the preview tower
@@ -586,10 +542,9 @@ void Game::resetGame() {
     gameStarted = false;  // Reset gameStarted to false
     // Clear enemies, towers, and other game elements if stored in lists or
     // vectors
-    time = 1, level = 1, lives = getJsonValue(CONFIG_PATH, "START_LIVES"), gold = getJsonValue(CONFIG_PATH, "START_MONEY"), score = 0;
     enemies.clear();
     towers.clear();
-    std::cout << "Game has been reset.\n";
+    // std::cout << "Game has been reset.\n";
 }
 
 sf::Vector2i Game::getGridPosition(const sf::Vector2f& position) const {
@@ -604,4 +559,98 @@ sf::Vector2i Game::getGridPosition(const sf::Vector2f& position) const {
         // Return an invalid grid position if the coordinates are out of the grid bounds
         return sf::Vector2i(-1, -1);
     }
+}
+
+void Game::placeTower(TowerType towerType, sf::Vector2f worldPos) {
+    std::cout <<"Placing!" << std::endl;
+    if (towerType == TowerType::None) {
+        std::cerr << "ERROR: No tower type selected!\n";
+        window.close();
+        return;
+    }
+
+    std::unique_ptr<Tower> tower;
+
+    switch (towerType) {
+        case TowerType::Pellet:
+            tower = std::make_unique<PelletTower>(worldPos);
+            break;
+        case TowerType::Bash:
+            // Assuming BashTower is a valid class inheriting from Tower
+            tower = std::make_unique<BashTower>(worldPos);
+            break;
+        case TowerType::Squirt:
+            tower = std::make_unique<SquirtTower>(worldPos);
+            break;
+        case TowerType::Frost:
+            tower = std::make_unique<FrostTower>(worldPos);
+            break;
+        case TowerType::Swarm:
+            tower = std::make_unique<SwarmTower>(worldPos);
+            break;
+        case TowerType::Dart:
+            // Assuming DartTower is a valid class inheriting from Tower
+            tower = std::make_unique<DartTower>(worldPos);
+            break;
+        default:
+            std::cerr << "ERROR: Unknown tower type!\n";
+            break;
+    }
+    currentState = GameState::Default;
+
+    // If a tower was successfully created, add it to the game arena or
+    // similar
+    int towerCost = tower->cost;
+    if( tower ){
+        if (towerCost > arena->getGold()) {
+            // std::cout << "Not enough arena->getGold()! " << std::endl;
+            currentState = GameState::Default;
+            return;
+        }
+        if (arena->addTower(std::move(tower))) {
+            currentState = GameState::Default;
+        }
+    }else{
+        std::cerr << "Error: Failed to create tower!" << std::endl;
+    }
+    showTowerMenu = false;
+    return;  // Break after handling the placement state
+}
+
+void Game::placeTowerAtGrid(TowerType towerType, int gridX, int gridY) {
+    sf::Vector2f position = getGridCellPosition(gridX, gridY);
+    std::cout << "Placing tower at grid (" << gridX << ", " << gridY << ") which translates to position (" << position.x << ", " << position.y << ")\n";
+    placeTower(towerType, position);
+}
+
+
+sf::Vector2f Game::getGridCellPosition(int gridX, int gridY) const {
+    // Calculate the world position based on grid coordinates and grid cell size
+    float xPos = LEFT_OFFSET + (gridX + 1) * GRID_CELL_SIZE;
+    float yPos = TOP_OFFSET + (gridY + 1) * GRID_CELL_SIZE;
+    return sf::Vector2f(xPos, yPos);
+}
+
+void Game::sellTowerAtGrid(int gridX, int gridY) {
+    sf::Vector2f position = getGridCellPosition(gridX, gridY);
+    std::cout << "Selling tower at grid (" << gridX << ", " << gridY << ") which translates to position (" << position.x << ", " << position.y << ")\n";
+    if (arena->deleteTower(position)) {
+        std::cout << "Tower sold successfully.\n";
+    } else {
+        std::cout << "No tower found at the given position.\n";
+    }
+}
+
+void Game::upgradeTowerAtGrid(int gridX, int gridY) {
+    sf::Vector2f position = getGridCellPosition(gridX, gridY);
+    std::cout << "Upgrading tower at grid (" << gridX << ", " << gridY << ") which translates to position (" << position.x << ", " << position.y << ")\n";
+    if (arena->upgradeTower(position) ){
+        std::cout << "Tower upgraded successfully.\n";
+    } else {
+        std::cout << "Failed to upgrade tower.\n";
+    }
+}
+
+void Game::startGame(){
+    gameStarted = true;
 }

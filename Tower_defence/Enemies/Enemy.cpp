@@ -49,7 +49,7 @@ Enemy::Enemy(sf::Vector2f startPosition, int initialHealth, int val, bool flying
 
 void Enemy::update(float deltaTime) {
     if (isStunned && stunTimer.getElapsedTime().asSeconds() > _stunTime) {
-        std::cout << "STUN TIME IS " << _stunTime <<std::endl;
+        // std::cout << "STUN TIME IS " << _stunTime <<std::endl;
         isStunned = false;
         speed = _originalSpeed;
     }
@@ -105,7 +105,7 @@ void Enemy::update(float deltaTime) {
 }
 
 void Enemy::stun(float duration) {
-    std::cout << "I am stunned !" << std::endl;
+    // std::cout << "I am stunned !" << std::endl;
     isStunned = true;
     _stunTime = duration;
     stunTimer.restart();

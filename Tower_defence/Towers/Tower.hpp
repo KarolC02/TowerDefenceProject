@@ -10,6 +10,7 @@
 
 class Tower {
 protected:
+    sf::Font towerFont; 
     sf::Text text;
     sf::RectangleShape shape; // Visual representation of the tower
     float attackSpeed;        // How often the tower can attack
@@ -23,6 +24,8 @@ protected:
     float bulletSpeed;
 
 public:
+    void clearBullets();
+    void drawBullets(sf::RenderWindow& window);
     int cost; // Cost of the tower
     Tower(sf::Vector2f position, sf::Color color, float atkSpeed, int rng, const std::string& typeSymbol, int dmg, int cst);
     
@@ -55,4 +58,5 @@ public:
     int getNextUpgradeDamage() const;
     int getNextUpgradeSpeed() const;
     int getNextUpgradeRange() const;
+
 };

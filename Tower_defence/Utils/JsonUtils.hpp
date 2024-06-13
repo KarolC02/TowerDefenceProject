@@ -2,8 +2,9 @@
 #define JSONUTILS_HPP
 
 #include <string>
+#include "DEFINE.hpp"
 #include <vector>
-#include "/Users/karol/desktop/Tower_defence/External_Libraries/json.hpp"
+#include JSON_LIB_PATH
 #include "TowerUpgrade.h"
 #include <SFML/Graphics.hpp>
 

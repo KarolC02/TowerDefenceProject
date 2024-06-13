@@ -9,6 +9,8 @@
 #include "Tower.hpp"
 #include "Enemy.hpp"
 #include "DEFINE.hpp"
+#include <mutex> // Include mutex
+#include <shared_mutex>
 
 class Arena {
 public:
@@ -20,11 +22,11 @@ public:
     void drawGrid(sf::RenderWindow& window) const;
     
     std::vector<std::unique_ptr<Tower>>& getTowers();
-    std::vector<std::unique_ptr<Enemy>>& getEnemies();
+    std::vector<std::shared_ptr<Enemy>>& getEnemies();
 
     bool addTower(std::unique_ptr<Tower> tower);
     bool deleteTower(const sf::Vector2f& position);
-    bool upgradeTower(const sf::Vector2f& position, int gold);
+    bool upgradeTower(const sf::Vector2f& position);
     
     sf::Vector2f snapToGrid(const sf::Vector2f& position) const;
     bool isSpaceFree(const sf::Vector2f& position);
@@ -54,19 +56,37 @@ public:
     
     Level currentLevel;
     sf::Clock currentLevelTimer;
-    int payCheck;
-    int scorePayCheck;
-    int livesDebt;
     float pausedTime;
+    void reset();
+    
+    int getLives() const;
+    void setLives(int lives);
+    int getGold() const;
+    void setGold(int gold);
+    int getScore() const;
+    void setScore(int score);
+    int getLevel() const;
+    void setLevel(int score);
     
 private:
+    
+    int lives;
+    int gold;
+    int score;
+    int level;
+    
+    void drawBullets(sf::RenderWindow &window) const;
+    
     sf::RectangleShape background;
     sf::RectangleShape topFrame1, topFrame2, topFrame3;
     sf::RectangleShape bottomFrame1, bottomFrame2, bottomFrame3;
     
     
     std::vector<std::unique_ptr<Tower>> towers;
-    std::vector<std::unique_ptr<Enemy>> enemies;
+    std::vector<std::shared_ptr<Enemy>> enemies;
+    
+    mutable std::shared_timed_mutex mtx;
+
     std::vector<sf::RectangleShape> pathCells;
 
     std::vector<Level> levels;
@@ -82,7 +102,7 @@ private:
     void freeGridForDeletedTower(int gridX, int gridY);
     
     void drawTowers(sf::RenderWindow &window) const;
-void drawEnemies(sf::RenderWindow &window) const;
+    void drawEnemies(sf::RenderWindow &window) const;
 
     void drawBackground(sf::RenderWindow& window) const;
 

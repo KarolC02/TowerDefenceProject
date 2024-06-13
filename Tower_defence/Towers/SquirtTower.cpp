@@ -12,6 +12,6 @@ SquirtTower::SquirtTower(sf::Vector2f position)
     info = "Squirt Tower";
 }
 
-void SquirtTower::update(float deltaTime, std::vector<std::unique_ptr<Enemy>>& enemies, const sf::RenderWindow& window) {
+void SquirtTower::update(float deltaTime, std::vector<std::shared_ptr<Enemy>>& enemies, const sf::RenderWindow& window) {
     Tower::update(deltaTime, enemies, window);
 }

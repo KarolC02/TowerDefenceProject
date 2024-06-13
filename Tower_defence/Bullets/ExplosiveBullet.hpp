@@ -9,10 +9,10 @@ private:
     float explosionRadius;  // Radius of the explosion
 
 public:
-    ExplosiveBullet(sf::Vector2f startPos, const Enemy* targetEnemy, float spd, int dmg, float explosionRadius);
+    ExplosiveBullet(sf::Vector2f startPos, std::shared_ptr<Enemy> targetEnemy, float spd, int dmg, float explosionRadius);
     float getExplosionRadius() const;
 
-    void update(float deltaTime, const std::vector<std::unique_ptr<Enemy>>& enemies) override;
+    void update(float deltaTime, const std::vector<std::shared_ptr<Enemy>>& enemies) override;
     void draw(sf::RenderWindow& window) const override;
 };
 

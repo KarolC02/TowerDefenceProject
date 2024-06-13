@@ -11,12 +11,12 @@ private:
     float slowDuration;  // Duration of the slow effect
 
 public:
-    FrostBullet(sf::Vector2f startPos, const Enemy* targetEnemy, float spd, int dmg, float slowFactor, float areaEffectRadius, float slowDuration);
+    FrostBullet(sf::Vector2f startPos, std::shared_ptr<Enemy> targetEnemy, float spd, int dmg, float slowFactor, float areaEffectRadius, float slowDuration);
     float getSlowFactor() const;
     float getAreaEffectRadius() const;
     float getSlowDuration() const;
 
-    void update(float deltaTime, const std::vector<std::unique_ptr<Enemy>>& enemies) override;
+    void update(float deltaTime, const std::vector<std::shared_ptr<Enemy>>& enemies) override;
     void draw(sf::RenderWindow& window) const override;
 };
 

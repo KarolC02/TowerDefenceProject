@@ -1,7 +1,8 @@
 #include "LevelManager.hpp"
 #include <fstream>
+#include "DEFINE.hpp"
 #include <iostream>
-#include "/Users/karol/desktop/Tower_defence/External_Libraries/json.hpp"  // Ensure you have this JSON library available
+#include JSON_LIB_PATH
 
 std::vector<Level> LevelManager::loadLevels(const std::string& filename) {
     std::ifstream file(filename);
@@ -31,7 +32,6 @@ std::vector<Level> LevelManager::loadLevels(const std::string& filename) {
                 j["value"].get<int>()
             );
         } else {
-            std::cout << "level number " << j["levelNumber"] << std::endl;
             throw std::runtime_error("Missing one or more level properties in JSON file. ");
         }
     }

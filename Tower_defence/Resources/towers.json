@@ -2,14 +2,14 @@
   "PelletTower": {
     "initial": {
       "color": [105, 105, 105],
-      "attackSpeed": 0.1,
-      "range": 500,
+      "attackSpeed": 2.5,
+      "range": 80,
       "damage": 10,
       "cost": 5
     },
     "upgrades": [
       { "name": "Pellet Tower 2", "attackSpeed": 0.1, "range": 20000, "damage": 20000, "cost": 5 },
-      { "name": "Pellet Tower 3", "attackSpeed": 2.5, "range": 20, "damage": 40, "cost": 10 },
+      { "name": "Pellet Tower 3", "attackSpeed": 2.5, "range": 400, "damage": 40, "cost": 10 },
       { "name": "Pellet Tower 4", "attackSpeed": 2.5, "range": 20, "damage": 80, "cost": 20 },
       { "name": "Pellet Tower 5", "attackSpeed": 2.5, "range": 20, "damage": 160, "cost": 40 },
       { "name": "Sniper Tower", "attackSpeed": 2.5, "range": 60, "damage": 400, "cost": 120 }
@@ -83,7 +83,7 @@
     "initial": {
       "color": [60, 179, 113],
       "attackSpeed": 2.5,
-      "range": 120,
+      "range": 100,
       "damage": 8,
       "cost": 20
     },

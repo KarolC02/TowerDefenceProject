@@ -23,11 +23,11 @@ BashTower::BashTower(sf::Vector2f position)
     showStompEffect = false;
 }
 
-void BashTower::fireBullet(const Enemy* targetEnemy, float bulletSpeed) {
-    std::cout << "BashTower firing bullet" << std::endl;
+void BashTower::fireBullet(const std::shared_ptr<Enemy> targetEnemy, float bulletSpeed) {
+    // std::cout << "BashTower firing bullet" << std::endl;
 }
 
-void BashTower::update(float deltaTime, std::vector<std::unique_ptr<Enemy>>& enemies, const sf::RenderWindow& window) {
+void BashTower::update(float deltaTime, std::vector<std::shared_ptr<Enemy>>& enemies, const sf::RenderWindow& window) {
     static std::random_device rd;  // Random device to seed the generator
     static std::mt19937 gen(rd()); // Mersenne Twister random number generator
     static std::uniform_real_distribution<float> dis(0.0f, 1.0f); // Uniform distribution [0, 1]
@@ -40,7 +40,7 @@ void BashTower::update(float deltaTime, std::vector<std::unique_ptr<Enemy>>& ene
         sf::Vector2f towerPos = getPosition();
         float attackRange = getRange();
         float stunChance = getChanceToStun();
-        std::cout << "THE CHANCE TO STUN IS "<< stunChance << std::endl;
+        // std::cout << "THE CHANCE TO STUN IS "<< stunChance << std::endl;
         float randomValue = dis(gen);
         bool doWeStun = (randomValue <= stunChance);
 
@@ -55,7 +55,7 @@ void BashTower::update(float deltaTime, std::vector<std::unique_ptr<Enemy>>& ene
                 // Check if the enemy should be stunned
                 if (doWeStun) {
                     float stunDuration = getJsonValue(CONFIG_PATH, "STUN_DURATION" + std::to_string(currentLevel));
-                    std::cout << "We are stunning for "<<  stunDuration << std::endl;
+                    // std::cout << "We are stunning for "<<  stunDuration << std::endl;
                     enemy->stun(stunDuration);  // Stun the enemy
                 }
             }
@@ -118,7 +118,7 @@ void BashTower::draw(sf::RenderWindow& window) {
 }
 
 float BashTower::getChanceToStun() const {
-    std::cout << "The chance to stun is "<< getJsonValue(CONFIG_PATH, "STUN_CHANCE" + std::to_string(currentLevel)) << std::endl;
+    // std::cout << "The chance to stun is "<< getJsonValue(CONFIG_PATH, "STUN_CHANCE" + std::to_string(currentLevel)) << std::endl;
     return (getJsonValue(CONFIG_PATH, "STUN_CHANCE" + std::to_string(currentLevel)));
 }
 

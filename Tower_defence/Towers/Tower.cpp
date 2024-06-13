@@ -5,13 +5,14 @@
 #include <stdexcept>
 #include "JsonUtils.hpp"
 
-static sf::Font towerFont;
-
 Tower::Tower(sf::Vector2f position, sf::Color color, float atkSpeed, int rng, const std::string& typeSymbol, int dmg, int cst)
     : attackSpeed(atkSpeed), range(rng), damage(dmg), cost(cst), attackCooldown(0.0f), currentLevel(0) {
+
+        
     if (!towerFont.loadFromFile(resourcePath() + "arial.ttf")) {
         throw std::runtime_error("Failed to load font!");
     }
+
 
     bulletSpeed = getJsonValue(CONFIG_PATH, "BULLET_SPEED");
 
@@ -86,8 +87,13 @@ int Tower::getNextUpgradeRange() const {
 void Tower::draw(sf::RenderWindow& window) {
     window.draw(shape);
     window.draw(text);
+}
+
+void Tower::drawBullets(sf::RenderWindow& window){
     for (const auto& bullet : bullets) {
-        bullet->draw(window);
+        if( bullet ){
+            bullet->draw(window);
+        }
     }
 }
 
@@ -111,15 +117,15 @@ void Tower::eraseOutOfScreenBullets(const sf::RenderWindow& window) {
                   bullets.end());
 }
 
-void Tower::fireBullet(const Enemy* targetEnemy, float bulletSpeed) {
+void Tower::fireBullet(const std::shared_ptr<Enemy> targetEnemy, float bulletSpeed) {
     if (canAttack()) {
-        std::cout << "Firing bullet at enemy: " << targetEnemy->getPosition().x << ", " << targetEnemy->getPosition().y << std::endl;
+        // std::cout << "Firing bullet at enemy: " << targetEnemy->getPosition().x << ", " << targetEnemy->getPosition().y << std::endl;
         bullets.emplace_back(std::make_unique<Bullet>(shape.getPosition(), targetEnemy, bulletSpeed, damage));
         resetCooldown();
     }
 }
 
-void Tower::update(float deltaTime, std::vector<std::unique_ptr<Enemy>>& enemies, const sf::RenderWindow& window) {
+void Tower::update(float deltaTime, std::vector<std::shared_ptr<Enemy>>& enemies, const sf::RenderWindow& window) {
     // Cooldown timer decrement
     if (attackCooldown > 0) {
         attackCooldown -= deltaTime;
@@ -128,7 +134,7 @@ void Tower::update(float deltaTime, std::vector<std::unique_ptr<Enemy>>& enemies
     // Fire bullets at enemies in range
     for (auto& enemy : enemies) {
         if (isInRange(enemy->getPosition()) && canAttack()) {
-            fireBullet(enemy.get(), bulletSpeed);
+            fireBullet(enemy , bulletSpeed);
             break; // Stop checking after finding the first enemy in range
         }
     }
@@ -189,4 +195,8 @@ int Tower::getRange() const {
 
 std::string Tower::getInfo() const {
     return info;
+}
+
+void Tower::clearBullets() {
+    bullets.clear();
 }

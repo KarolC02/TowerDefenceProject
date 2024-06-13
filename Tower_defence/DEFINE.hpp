@@ -65,3 +65,5 @@ enum class TowerType {
 
 #define CONFIG_PATH "/Users/karol/desktop/Tower_defence/Tower_defence/Resources/config.json"
 #define TOWER_PARAMETERS_PATH "/Users/karol/desktop/Tower_defence/Tower_defence/Resources/towers.json"
+#define JSON_LIB_PATH "/Users/karol/desktop/Tower_defence/External_Libraries/json.hpp"
+#define LEVELS_JSON  "/Users/karol/desktop/Tower_defence/Tower_defence/Resources/levels.json"

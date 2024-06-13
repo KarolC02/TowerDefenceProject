@@ -12,6 +12,6 @@ PelletTower::PelletTower(sf::Vector2f position)
     info = "Pellet Tower";
 }
 
-void PelletTower::update(float deltaTime, std::vector<std::unique_ptr<Enemy>>& enemies, const sf::RenderWindow& window) {
+void PelletTower::update(float deltaTime, std::vector<std::shared_ptr<Enemy>>& enemies, const sf::RenderWindow& window) {
     Tower::update(deltaTime, enemies, window);
 }

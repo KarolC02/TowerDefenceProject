@@ -18,7 +18,7 @@ std::vector<std::string> split(const std::string& s, char delimiter) {
 
 float getJsonValue(const std::string& filename, const std::string& key) {
     try {
-        // std::cout << "Attempting to open file: " << filename << std::endl;
+        // // std::cout << "Attempting to open file: " << filename << std::endl;
         std::ifstream file(filename);
         if (!file.is_open()) {
             std::cerr << "Could not open file: " << filename << std::endl;
@@ -46,7 +46,7 @@ float getJsonValue(const std::string& filename, const std::string& key) {
         }
 
         float value = currentJson->get<float>();
-        // std::cout << "Loaded " << key << " from JSON: " << value << std::endl;
+        // // std::cout << "Loaded " << key << " from JSON: " << value << std::endl;
         return value;
     } catch (const std::exception& e) {
         std::cerr << "Error loading " << key << " from JSON: " << e.what() << std::endl;
@@ -66,7 +66,7 @@ void printJsonFile(const std::string& filename) {
         file >> json;
         file.close();
 
-        std::cout << "Current JSON file content: " << json.dump(4) << std::endl; // Pretty print with 4 spaces
+        // std::cout << "Current JSON file content: " << json.dump(4) << std::endl; // Pretty print with 4 spaces
     } catch (const std::exception& e) {
         std::cerr << "Error loading JSON file: " << e.what() << std::endl;
     }

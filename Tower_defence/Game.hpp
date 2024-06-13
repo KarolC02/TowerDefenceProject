@@ -13,24 +13,47 @@
 #include <vector>
 #include "Button.hpp"
 #include "JsonUtils.hpp"
+#include <queue>
+#include <mutex>
+#include <condition_variable>
+#include "SocketServer.hpp"
+#include "CommandQueue.hpp"
 
 class Game {
 public:
-    Game();
+    Game(int port);
     void Run();
-
+    void placeTower(TowerType towerType, sf::Vector2f position);
+    void placeTowerAtGrid(TowerType towerType, int gridX, int gridY);
+    void addCommand(std::function<void()> command);
+    
     enum class GameState {
         Default,
         PlacingTower,
         TowerSelected,
         GameOver,
-        Paused
+        Paused,
     };
-
-    void setGameState(GameState newState); // To change game states
+    
+    
+    void startGame();
+    void setGameState(GameState newState);
     void handleMouseHover(sf::Vector2i hoverPosition);
-    std::vector<TowerButton> buttons;
+    sf::Vector2f getGridCellPosition(int gridX, int gridY) const;
+    void sellTowerAtGrid(int gridX, int gridY);
+    void upgradeTowerAtGrid(int gridX, int gridY);
+    void resetGame();
+    bool getGameOver() const;
+    
 private:
+    std::vector<TowerButton> buttons;
+    std::unique_ptr<Arena> arena;
+    
+    sf::RectangleShape gameOverOverlay;
+    sf::Text gameOverText;
+    
+    SocketServer socketServer;
+    bool gameOver;
     bool gameStarted;
     sf::Clock pausedClock;
     sf::RectangleShape pauseOverlay;
@@ -47,15 +70,15 @@ private:
     Button ResetButton;
     sf::CircleShape towerRangeCircle;
     
-    void updateDebts();
     TowerType currentlyPlacing;
     bool showPreview = true;
     std::unique_ptr<Tower> previewTower;
     GameState currentState;
     sf::RenderWindow window;
-    Arena arena;
-    std::vector<std::unique_ptr<Tower>> towers;
-    std::vector<Enemy> enemies;
+    
+    mutable std::mutex gameMutex;
+    CommandQueue commandQueue;
+    
     sf::Font gameFont;
     
     sf::Text timeText, levelText, livesText, goldText, scoreText;
@@ -71,25 +94,23 @@ private:
     
     void updateUpgradeDisplayInfo(Tower& tower);
     
+    int time = 1;
     
-    int time = 1, level = 1, lives = 20, gold = getJsonValue(CONFIG_PATH, "START_MONEY"), score = 0;
     void updateTowerMenuInfo( Tower& tower );
     void setupText(sf::Text& text, const std::string& value, float x, float y, sf::Color color);
-    void updateStatsDisplay();  // Updates the text objects with the current stats
+    void updateStatsDisplay(); 
     void updateTowerDisplayInfo(Tower& tower );
-
-
     void displayTowerMenu(sf::RenderWindow& window);
     sf::Vector2i getGridPosition(const sf::Vector2f& position) const;
     bool showTowerMenu;
     void displayInfoBar(sf::RenderWindow& window);
     void displayTowerInfo(sf::RenderWindow& window);
-    void resetGame();
     void setCurrentlyPlacing(TowerType type);
+    void handleMouseClick(sf::Vector2i clickPosition);
+    bool isFreeSpace(const sf::Vector2f& gridPosition) const;
+    
     void processEvents();
     void update(float dt);
     void render();
-    void handleMouseClick(sf::Vector2i clickPosition);
-    bool isFreeSpace(const sf::Vector2f& gridPosition) const;
-    bool collision(const sf::Shape& shape1, const sf::Shape& shape2) const;
+    
 };

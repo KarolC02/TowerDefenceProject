@@ -17,11 +17,16 @@
 
 
 Arena::Arena(float width, float height, sf::Vector2f position)
-    : alreadySpawnedThisLevel(0), currentLevelIndex(0), readyForNextLevel(true),
-      payCheck(0), scorePayCheck(0), livesDebt(0), justAddedTower(false) {
+    : alreadySpawnedThisLevel(0), currentLevelIndex(0), readyForNextLevel(true), justAddedTower(false), score(0), level(1) {
+          
+    
+        lives = getJsonValue(CONFIG_PATH, "START_LIVES");
+        gold = getJsonValue(CONFIG_PATH, "START_MONEY");
+
+    
     
           
-    levels = LevelManager::loadLevels("/Users/karol/desktop/Tower_defence/Tower_defence/Resources/levels.json");
+    levels = LevelManager::loadLevels(LEVELS_JSON);
     std::fill(&grid[0][0], &grid[0][0] + sizeof(grid), false);
         
     for (int i = 0; i < GRID_WIDTH * 2; ++i) {
@@ -101,7 +106,7 @@ void Arena::updateEnemies(float dt) {
 }
 
 void Arena::spawnCurrentLevelEnemies() {
-    float spawnCooldown = 1.0f; // TODO
+    float spawnCooldown = getJsonValue(CONFIG_PATH, "SPAWN_COOLDOWN");
     if (currentLevel.numberOfEnemies > alreadySpawnedThisLevel) {
         if (currentLevel.group) {
             while (currentLevel.numberOfEnemies > alreadySpawnedThisLevel) {
@@ -124,12 +129,6 @@ void Arena::manageLevels() {
         currentLevelTimer.restart();
         enemySpawnTimer.restart();
         loadNextLevel();
-        std::cout << "Level number: " << currentLevel.levelNumber << std::endl;
-        std::cout << "Enemy Health: " << currentLevel.health << std::endl;
-        std::cout << "NO enemies: " << currentLevel.numberOfEnemies << std::endl;
-        std::cout << "Group?: " << currentLevel.group << std::endl;
-        std::cout << "Duration in Sec: " << currentLevel.maxDuration << std::endl;
-        std::cout << "Spawn: " << currentLevel.spawn << std::endl;
     }
     if (currentLevelTimer.getElapsedTime().asSeconds() - pausedTime > currentLevel.maxDuration){
         readyForNextLevel = true;
@@ -140,11 +139,22 @@ void Arena::draw(sf::RenderWindow& window) const {
     drawBackground(window);
     drawTowers(window);
     drawEnemies(window);
+    drawBullets(window);
+}
+
+void Arena::drawBullets(sf::RenderWindow &window) const{
+    for (const auto& tower : towers) {
+        tower->drawBullets(window);
+    }
 }
 
 void Arena::drawTowers(sf::RenderWindow &window) const {
     for (const auto& tower : towers) {
-        tower->draw(window);
+        if (tower) {
+            tower->draw(window);
+        } else {
+            std::cerr << "Error: Attempted to draw a null tower!" << std::endl;
+        }
     }
 }
 
@@ -194,27 +204,34 @@ std::vector<std::unique_ptr<Tower>>& Arena::getTowers() {
     return towers;
 }
 
-std::vector<std::unique_ptr<Enemy>>& Arena::getEnemies() {
+std::vector<std::shared_ptr<Enemy>>& Arena::getEnemies() {
     return enemies;
 }
 
 bool Arena::addTower(std::unique_ptr<Tower> tower) {
-    sf::Vector2f snappedPos = snapToGrid(tower->getPosition());
-    if (isSpaceFree(snappedPos) && isWithinBounds(snappedPos)) {
+    sf::Vector2f originalPos = tower->getPosition();
+    sf::Vector2f snappedPos = snapToGrid(originalPos);
+    int gridX = getGridX(snappedPos.x);
+    int gridY = getGridY(snappedPos.y);
+    int towerCost = tower->getCost();
+    
+    std::cout << "Attempting to add tower at original position: (" << originalPos.x << ", " << originalPos.y << "), snapped to grid position: (" << gridX << ", " << gridY << ")\n";
+
+    if (isSpaceFree(snappedPos) && isWithinBounds(snappedPos) && gold >= towerCost ) {
         tower->setPosition(snappedPos);
-        int towerX = tower->getShape().getPosition().x;
-        int towerY = tower->getShape().getPosition().y;
         towers.push_back(std::move(tower));
         justAddedTower = true;
-        int gridX = getGridX(towerX);
-        int gridY = getGridY(towerY);
 
         updateGridForNewTower(gridX, gridY);
-
+        std::cout << "Successfully added tower at snapped position: (" << snappedPos.x << ", " << snappedPos.y << ")\n";
+        gold -= towerCost;
         return true; // Successfully added tower
     }
+
+    std::cout << "Failed to add tower: Space is not free or not within bounds\n";
     return false; // Failed to add tower
 }
+
 
 int Arena::getGridX(int x) {
     return (x - LEFT_OFFSET) / GRID_CELL_SIZE - 1;
@@ -244,18 +261,29 @@ void Arena::removeDeadOrOutOfBoundsEnemies() {
                              enemy.getShape().getPosition().y > TOP_OFFSET + ARENA_HEIGHT + enemy.getShape().getGlobalBounds().height;
 
         if (isOutOfBounds) {
-            livesDebt += 1;  // Increment lives debt if enemy is out of bounds
+            lives -= 1;  // Increment lives debt if enemy is out of bounds
             indicesToRemove.push_back(i);  // Mark for removal
         } else if (enemy.getIsDead()) {
-            payCheck += enemy.getValue();  // Add enemy value to paycheck if dead
+            gold += enemy.getValue();  // Add enemy value to paycheck if dead
 
             if (enemy.spawn) {
                 enemiesToSpawn.push_back(std::make_unique<Enemy>(enemy.getPosition() + sf::Vector2f(5, 5), enemy.getMaxHealth() / 2, enemy.getValue(), enemy.flying, false, enemy.slowImmune, enemy.fast));
                 enemiesToSpawn.push_back(std::make_unique<Enemy>(enemy.getPosition(), enemy.getMaxHealth() / 2, enemy.getValue(), enemy.flying, false, enemy.slowImmune, enemy.fast));
             }
 
-            scorePayCheck += enemy.getValue();  // Increment score by enemy value
+            score += enemy.getValue();  // Increment score by enemy value
             indicesToRemove.push_back(i);  // Mark for removal
+        }
+    }
+
+    // Clear targets of bullets if their target is being removed
+    for (auto& tower : towers) {
+        for (auto& bullet : tower->getBullets()) {
+            for (int index : indicesToRemove) {
+                if (bullet->hasTarget(enemies[index])) {
+                    bullet->clearTarget();
+                }
+            }
         }
     }
 
@@ -269,6 +297,7 @@ void Arena::removeDeadOrOutOfBoundsEnemies() {
         enemies.push_back(std::move(newEnemy));
     }
 }
+
 
 bool Arena::isWithinBounds(sf::Vector2f snappedPos) {
     return (snappedPos.x > LEFT_OFFSET && snappedPos.x < ARENA_WIDTH + LEFT_OFFSET
@@ -396,16 +425,16 @@ std::vector<std::pair<int, int>> Arena::findPathAStar(const std::pair<int, int>&
 
 
 void Arena::updateGridForNewTower(int gridX, int gridY) {
-    std::cout << "Updating grid for new tower at grid position (" << gridX << ", " << gridY << "):\n";
+    // std::cout << "Updating grid for new tower at grid position (" << gridX << ", " << gridY << "):\n";
     for (int i = 0; i < 2; i++) {
         for (int j = 0; j < 2; j++) {
             int cellX = gridX + i;
             int cellY = gridY + j;
             if (cellX >= 0 && cellX < GRID_WIDTH * 2 && cellY >= 0 && cellY < GRID_HEIGHT * 2) {
                 grid[cellX][cellY] = true; // Mark the cell as occupied by the tower
-                std::cout << "Marked cell (" << cellX << ", " << cellY << ") as occupied.\n";
+                // std::cout << "Marked cell (" << cellX << ", " << cellY << ") as occupied.\n";
             } else {
-                std::cout << "Cell (" << cellX << ", " << cellY << ") is out of bounds and not marked.\n";
+                // std::cout << "Cell (" << cellX << ", " << cellY << ") is out of bounds and not marked.\n";
             }
         }
     }
@@ -421,19 +450,21 @@ bool Arena::deleteTower(const sf::Vector2f& position) {
             int gridY = getGridY(towerY);
 
             freeGridForDeletedTower(gridX, gridY);
-
-            payCheck += (*it)->getCost() * 0.6;
+            
+            (*it)->clearBullets(); // Clear bullets before deleting the tower
+            
+            gold += (*it)->getCost() * 0.6;
             towers.erase(it);
 
             justAddedTower = true;  // You might rename this flag to something like `towerLayoutChanged`.
-
+            
             return true; // Tower successfully deleted.
         }
     }
     return false; // No tower found at the given position.
 }
 
-bool Arena::upgradeTower(const sf::Vector2f& position, int gold) {
+bool Arena::upgradeTower(const sf::Vector2f& position) {
     sf::Vector2f snappedPos = snapToGrid(position);
     for (auto& tower : towers) {
         if (tower->getPosition() == snappedPos) {
@@ -441,7 +472,7 @@ bool Arena::upgradeTower(const sf::Vector2f& position, int gold) {
                 int upgradeCost = tower->getNextUpgradeCost();
                 if (gold >= upgradeCost) {
                     tower->upgrade();
-                    payCheck -= upgradeCost;
+                     gold -= upgradeCost;
                     return true; // Tower successfully updated.
                 } else {
                     return false;
@@ -455,14 +486,14 @@ bool Arena::upgradeTower(const sf::Vector2f& position, int gold) {
 }
 
 void Arena::freeGridForDeletedTower(int gridX, int gridY) {
-    std::cout << "Freeing grid cells previously occupied by a tower at (" << gridX << ", " << gridY << "):\n";
+    // std::cout << "Freeing grid cells previously occupied by a tower at (" << gridX << ", " << gridY << "):\n";
     for (int i = 0; i < 2; i++) {
         for (int j = 0; j < 2; j++) {
             int cellX = gridX + i;
             int cellY = gridY + j;
             if (cellX >= 0 && cellX < GRID_WIDTH * 2 && cellY >= 0 && cellY < GRID_HEIGHT * 2) {
                 grid[cellX][cellY] = false; // Mark the cell as free
-                std::cout << "Freed cell (" << cellX << ", " << cellY << ").\n";
+                // std::cout << "Freed cell (" << cellX << ", " << cellY << ").\n";
             }
         }
     }
@@ -574,31 +605,30 @@ std::vector<std::pair<int, int>> Arena::findPathBFS(const std::pair<int, int>& s
 
 
 void Arena::printGrid() const {
-    std::cout << "Current Grid State:\n";
+    // std::cout << "Current Grid State:\n";
     for (int y = 0; y < GRID_HEIGHT * 2; y++) {
         for (int x = 0; x < GRID_WIDTH * 2; x++) {
             if (grid[x][y]) {
-                std::cout << "X ";
+                // std::cout << "X ";
             } else {
-                std::cout << ". ";
+                // std::cout << ". ";
             }
         }
-        std::cout << "\n";
+        // std::cout << "\n";
     }
-    std::cout << std::endl;
+    // std::cout << std::endl;
 }
 
 void Arena::printPath(const std::vector<std::pair<int, int>>& path) {
     if (path.empty()) {
-        std::cout << "No path found." << std::endl;
+        // std::cout << "No path found." << std::endl;
         return;
     }
 
-    std::cout << "Path: ";
+    // std::cout << "Path: ";
     for (const auto& step : path) {
-        std::cout << "(" << step.first << ", " << step.second << ") -> ";
+        // std::cout << "(" << step.first << ", " << step.second << ") -> ";
     }
-    std::cout << "End" << std::endl;
 }
 
 void Arena::markPathCellsRed(const std::vector<std::pair<int, int>>& path) {
@@ -619,3 +649,37 @@ void Arena::spawnEnemy(int health, int value) {
     float y = distr(eng);
     enemies.push_back(std::make_unique<Enemy>(sf::Vector2f(0, y), health, value, currentLevel.flying, currentLevel.spawn, currentLevel.immune, currentLevel.fast));
 }
+
+int Arena::getLives() const {
+    return lives;
+}
+
+void Arena::setLives(int lives) {
+    this->lives = lives;
+}
+
+int Arena::getGold() const {
+    return gold;
+}
+
+void Arena::setGold(int gold) {
+    this->gold = gold;
+}
+
+int Arena::getScore() const {
+    return score;
+}
+
+void Arena::setScore(int score) {
+    this->score = score;
+}
+
+int Arena::getLevel() const {
+    return currentLevelIndex;
+}
+
+void Arena::setLevel(int score) {
+    this->level = level;
+}
+
+

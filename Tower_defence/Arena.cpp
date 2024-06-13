@@ -26,7 +26,7 @@ Arena::Arena(float width, float height, sf::Vector2f position)
     
     
           
-    levels = LevelManager::loadLevels("/Users/karol/desktop/Tower_defence/Tower_defence/Resources/levels.json");
+    levels = LevelManager::loadLevels(LEVELS_JSON);
     std::fill(&grid[0][0], &grid[0][0] + sizeof(grid), false);
         
     for (int i = 0; i < GRID_WIDTH * 2; ++i) {
@@ -77,7 +77,6 @@ void Arena::loadNextLevel() {
 }
 
 void Arena::update(float dt, const sf::RenderWindow& window) {
-    
     manageLevels();
     spawnCurrentLevelEnemies();
     updateTowers(dt, window);
@@ -130,12 +129,6 @@ void Arena::manageLevels() {
         currentLevelTimer.restart();
         enemySpawnTimer.restart();
         loadNextLevel();
-        // std::cout << "Level number: " << currentLevel.levelNumber << std::endl;
-        // std::cout << "Enemy Health: " << currentLevel.health << std::endl;
-        // std::cout << "NO enemies: " << currentLevel.numberOfEnemies << std::endl;
-        // std::cout << "Group?: " << currentLevel.group << std::endl;
-        // std::cout << "Duration in Sec: " << currentLevel.maxDuration << std::endl;
-        // std::cout << "Spawn: " << currentLevel.spawn << std::endl;
     }
     if (currentLevelTimer.getElapsedTime().asSeconds() - pausedTime > currentLevel.maxDuration){
         readyForNextLevel = true;
@@ -271,7 +264,7 @@ void Arena::removeDeadOrOutOfBoundsEnemies() {
             lives -= 1;  // Increment lives debt if enemy is out of bounds
             indicesToRemove.push_back(i);  // Mark for removal
         } else if (enemy.getIsDead()) {
-            payCheck += enemy.getValue();  // Add enemy value to paycheck if dead
+            gold += enemy.getValue();  // Add enemy value to paycheck if dead
 
             if (enemy.spawn) {
                 enemiesToSpawn.push_back(std::make_unique<Enemy>(enemy.getPosition() + sf::Vector2f(5, 5), enemy.getMaxHealth() / 2, enemy.getValue(), enemy.flying, false, enemy.slowImmune, enemy.fast));
@@ -636,7 +629,6 @@ void Arena::printPath(const std::vector<std::pair<int, int>>& path) {
     for (const auto& step : path) {
         // std::cout << "(" << step.first << ", " << step.second << ") -> ";
     }
-    // std::cout << "End" << std::endl;
 }
 
 void Arena::markPathCellsRed(const std::vector<std::pair<int, int>>& path) {

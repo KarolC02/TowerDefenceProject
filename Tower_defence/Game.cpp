@@ -148,7 +148,7 @@ Game::Game(int port)
 
 void Game::Run() {
     sf::Clock clock;
-    socketServer.start(); // Start the socket server
+    socketServer.start();
     const float timestep = 1.0f / 60.0f;
     float accumulator = 0.0f;
 
@@ -171,7 +171,7 @@ void Game::Run() {
         }
         
     }
-    socketServer.stop(); // Stop the socket server
+    socketServer.stop();
 }
 
 void Game::setupText(sf::Text& text, const std::string& value, float x, float y, sf::Color color) {
@@ -212,13 +212,11 @@ void Game::updateTowerDisplayInfo(Tower& tower) {
 
 void Game::updateUpgradeDisplayInfo(Tower& tower) {
     if (tower.canUpgrade()) {
-        // Set strings for upgrade details if available
         _upgradeTowerDamage.setString("Damage: " + std::to_string(tower.getNextUpgradeDamage()));
         _upgradeTowerCost.setString("Cost: " + std::to_string(tower.getNextUpgradeCost()));
         _upgradeTowerRange.setString("Range: " + std::to_string(tower.getNextUpgradeRange()));
         _upgradeTowerSpeed.setString("Speed: " + std::to_string(tower.getNextUpgradeSpeed()));
 
-        // Optional: Update the text for displaying upgrade info
         _upgradeTowerInfoText.setString(tower.getNextUpgradeName());
         sf::FloatRect upgradeTextRect = _upgradeTowerInfoText.getLocalBounds();
         _upgradeTowerInfoText.setOrigin(upgradeTextRect.left + upgradeTextRect.width / 2.0f, upgradeTextRect.top + upgradeTextRect.height / 2.0f);
@@ -240,8 +238,6 @@ void Game::processEvents() {
         switch (event.type) {
             case sf::Event::KeyPressed:
                 if (event.key.code == sf::Keyboard::R) {
-                    // Reload configuration when 'R' key is pressed
-                    // std::cout << "Reloading config file: " << CONFIG_PATH << std::endl;
                     printJsonFile(CONFIG_PATH);
                 }
                 break; // Add break to prevent fall-through
@@ -356,12 +352,11 @@ void Game::render() {
     }
 
     if (showPreview && previewTower) {
-        previewTower->draw(window);  // Draw the preview tower
-        // Optionally, draw the tower's range
+        previewTower->draw(window);
         sf::CircleShape rangeCircle(previewTower->getRange());
-        rangeCircle.setFillColor(sf::Color(255, 255, 255, 50));  // Semi-transparent
+        rangeCircle.setFillColor(sf::Color(255, 255, 255, 50));
         rangeCircle.setPosition(previewTower->getPosition());
-        rangeCircle.setOrigin(previewTower->getRange(), previewTower->getRange());  // Center the circle on the tower
+        rangeCircle.setOrigin(previewTower->getRange(), previewTower->getRange());
         window.draw(rangeCircle);
     }
     if (showTowerMenu) {
@@ -369,9 +364,7 @@ void Game::render() {
     }
 
     if (currentState == GameState::Paused) {
-        // Draw the pause overlay
         window.draw(pauseOverlay);
-        // Draw the "Paused" text
         window.draw(pausedText);
     }
     if( gameOver ){
@@ -434,15 +427,12 @@ void Game::handleMouseClick(sf::Vector2i clickPosition) {
     sf::Vector2f worldPos = window.mapPixelToCoords(clickPosition);
     sf::Vector2f snappedPos = arena->snapToGrid(worldPos);
     if (ResetButton.isMouseOver(window)) {
-        // std::cout << "Reset Button Clicked\n";
         resetGame();
     }
     if (SellTowerButton.isMouseOver(window) && showTowerMenu == true) {
-        // std::cout << "Sell Tower Button clicked\n";
         arena->deleteTower(towerRangeCircle.getPosition());
     }
     if (UpgradeTowerButton.isMouseOver(window) && showTowerMenu == true) {
-        // std::cout << "Upgrade Tower Button clicked\n";
         arena->upgradeTower(towerRangeCircle.getPosition());
     }
     
@@ -518,10 +508,6 @@ void Game::handleMouseHover(sf::Vector2i hoverPosition) {
     }
 }
 
-bool Game::collision(const sf::Shape& shape1, const sf::Shape& shape2) const {
-    return shape1.getGlobalBounds().intersects(shape2.getGlobalBounds());
-}
-
 void Game::setCurrentlyPlacing(TowerType type) { currentlyPlacing = type; }
 
 void Game::resetGame() {
@@ -553,7 +539,6 @@ sf::Vector2i Game::getGridPosition(const sf::Vector2f& position) const {
 }
 
 void Game::placeTower(TowerType towerType, sf::Vector2f worldPos) {
-    std::cout <<"Placing!" << std::endl;
     if (towerType == TowerType::None) {
         std::cerr << "ERROR: No tower type selected!\n";
         window.close();
@@ -589,8 +574,6 @@ void Game::placeTower(TowerType towerType, sf::Vector2f worldPos) {
     }
     currentState = GameState::Default;
 
-    // If a tower was successfully created, add it to the game arena or
-    // similar
     int towerCost = tower->cost;
     if( tower ){
         if (towerCost > arena->getGold()) {
@@ -620,18 +603,18 @@ void Game::placeTowerAtGrid(TowerType towerType, int gridX, int gridY) {
     });
 }
 
-void Game::sellTowerAtGrid(int gridX, int gridY) {
-    addCommand([this, gridX, gridY]() {
-        sf::Vector2f position = getGridCellPosition(gridX, gridY);
-        std::unique_lock<std::mutex> lock(gameMutex);
-        std::cout << "Selling tower at grid (" << gridX << ", " << gridY << ") which translates to position (" << position.x << ", " << position.y << ")\n";
-        if (arena->deleteTower(position)) {
-            std::cout << "Tower sold successfully.\n";
-        } else {
-            std::cout << "No tower found at the given position.\n";
-        }
-    });
-}
+    void Game::sellTowerAtGrid(int gridX, int gridY) {
+        addCommand([this, gridX, gridY]() {
+            sf::Vector2f position = getGridCellPosition(gridX, gridY);
+            std::unique_lock<std::mutex> lock(gameMutex);
+            std::cout << "Selling tower at grid (" << gridX << ", " << gridY << ") which translates to position (" << position.x << ", " << position.y << ")\n";
+            if (arena->deleteTower(position)) {
+                std::cout << "Tower sold successfully.\n";
+            } else {
+                std::cout << "No tower found at the given position.\n";
+            }
+        });
+    }
 
 void Game::upgradeTowerAtGrid(int gridX, int gridY) {
     addCommand([this, gridX, gridY]() {
@@ -658,7 +641,6 @@ void Game::addCommand(std::function<void()> command) {
 }
 
 sf::Vector2f Game::getGridCellPosition(int gridX, int gridY) const {
-    // Calculate the world position based on grid coordinates and grid cell size
     float xPos = LEFT_OFFSET + (gridX + 1) * GRID_CELL_SIZE;
     float yPos = TOP_OFFSET + (gridY + 1) * GRID_CELL_SIZE;
     return sf::Vector2f(xPos, yPos);

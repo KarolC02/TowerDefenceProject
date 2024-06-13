@@ -27,7 +27,7 @@ class TowerDefenseAI:
             self.allocate_turrets_randomly()
             while not self.check_game_over():
                 self.random_game_actions()
-                time.sleep(0.1)  # Adjust the sleep time based on game requirements
+                time.sleep(5)  # Adjust the sleep time based on game requirements
             self.reset_game()
 
     def start_game(self):

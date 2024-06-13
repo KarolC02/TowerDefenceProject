@@ -32,14 +32,14 @@ void FrostTower::update(float deltaTime, std::vector<std::shared_ptr<Enemy>>& en
     for (auto& enemy : enemies) {
         if (isInRange(enemy->getPosition()) && canAttack()) {
             fireBullet(enemy , bulletSpeed);
-            break; // Stop checking after finding the first enemy in range
+            break;
         }
     }
 
     // Update bullets and remove out-of-screen bullets
     auto bulletIter = bullets.begin();
     while (bulletIter != bullets.end()) {
-        (*bulletIter)->update(deltaTime, enemies); // Update the bullet's position
+        (*bulletIter)->update(deltaTime, enemies);
 
         // Check if the bullet should be removed
         if ((*bulletIter)->shouldBeRemoved()) {

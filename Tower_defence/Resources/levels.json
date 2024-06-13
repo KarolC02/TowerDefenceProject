@@ -3,9 +3,9 @@
         {
             "levelNumber": 1,
             "maxDuration": 35,
-            "numberOfEnemies": 1000,
+            "numberOfEnemies": 10,
             "group": false,
-            "health": 200,
+            "health": 10,
             "immune": false,
             "fast": false,
             "flying": false,

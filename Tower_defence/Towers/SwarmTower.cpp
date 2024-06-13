@@ -1,6 +1,6 @@
 #include "SwarmTower.hpp"
 #include "DEFINE.hpp"
-#include <algorithm> // For std::min
+#include <algorithm> 
 
 SwarmTower::SwarmTower(sf::Vector2f position)
     : Tower(position, SWARM_TOWER_COLOR, 0.f , GRID_CELL_SIZE * 4, "SW", 20, 50) {
@@ -44,7 +44,6 @@ void SwarmTower::update(float deltaTime, std::vector<std::shared_ptr<Enemy>>& en
         }
 
         if (!targets.empty()) {
-            // std::cout << "FIRING " << targets.size() << " Bullets!" << std::endl;
             for (auto& target : targets) {
                 fireBullet(target, bulletSpeed);  // Pass shared_ptr directly
             }

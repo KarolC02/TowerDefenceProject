@@ -56,9 +56,6 @@ public:
     
     Level currentLevel;
     sf::Clock currentLevelTimer;
-    int payCheck;
-    int scorePayCheck;
-    int livesDebt;
     float pausedTime;
     void reset();
     
@@ -86,10 +83,10 @@ private:
     
     
     std::vector<std::unique_ptr<Tower>> towers;
+    std::vector<std::shared_ptr<Enemy>> enemies;
     
     mutable std::shared_timed_mutex mtx;
 
-    std::vector<std::shared_ptr<Enemy>> enemies;
     std::vector<sf::RectangleShape> pathCells;
 
     std::vector<Level> levels;
@@ -105,7 +102,7 @@ private:
     void freeGridForDeletedTower(int gridX, int gridY);
     
     void drawTowers(sf::RenderWindow &window) const;
-void drawEnemies(sf::RenderWindow &window) const;
+    void drawEnemies(sf::RenderWindow &window) const;
 
     void drawBackground(sf::RenderWindow& window) const;
 

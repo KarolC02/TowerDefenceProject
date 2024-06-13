@@ -45,13 +45,11 @@ bool TowerButton::isMouseOver(const sf::RenderWindow& window) const {
 void TowerButton::setText(const std::string& text, const sf::Font& font) {
     buttonText.setFont(font);
     buttonText.setString(text);
-    // Optionally, adjust the text position here if needed
 }
 
 void TowerButton::setPosition(const sf::Vector2f& position) {
     shape.setPosition(position);
-    // Adjust the buttonText position relative to the new shape position
-    buttonText.setPosition(position + sf::Vector2f(10, 10)); // Adjust for padding
+    buttonText.setPosition(position + sf::Vector2f(10, 10));
 }
 
 sf::Vector2f TowerButton::getPosition() const {
@@ -61,6 +59,5 @@ sf::Vector2f TowerButton::getPosition() const {
 
 void TowerButton::setSize(const sf::Vector2f& size) {
     shape.setSize(size);
-    // You might want to adjust buttonText size or position based on new button size
 }
 
